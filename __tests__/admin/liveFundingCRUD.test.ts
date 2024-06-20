@@ -27,7 +27,6 @@ describe('API Tests', () => {
             console.log("response",response.data)
          
         } catch (error) {
-            //console.log('Error:', error);
             throw error
         }
     }, 20000);

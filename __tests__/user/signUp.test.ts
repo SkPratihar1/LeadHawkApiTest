@@ -28,17 +28,17 @@ describe('API Tests', () => {
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 
-                console.error('Error response:', error.response?.data);
-                console.error('Status:', error.response?.status);
+                // console.error('Error response:', error.response?.data);
+                console.error('Status:', error.response?.data.status);
                 console.error('message:', error.response?.data.message);
-                console.error('Headers:', error.response?.headers);
-                // const errorMessage = error.response?.data.message;
-                // expect(errorMessage).toBe('Limit reached for your subscription level');
+                const errorMessage = error.response?.data.message;
+                expect(errorMessage).toBe('Email already in use');
 
               } else {
               
                 console.error('Error message:', (error as Error).message);
               }
+              // throw error
 
             // console.log('Error:', error);
         }

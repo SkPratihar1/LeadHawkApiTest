@@ -50,7 +50,7 @@ describe('API Tests', () => {
             console.log("response@",response.data)
          
         } catch (error) {
-            //console.log(error)
+            
             throw error
         }
     }, 20000);

@@ -29,10 +29,7 @@ describe('API Tests', () => {
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 
-                // console.error('Error response:', error.response?.data);
-                // console.error('Status:', error.response?.status);
-                // console.error('message:', error.response?.data.message);
-                // console.error('Headers:', error.response?.headers);
+                
                 console.log(error.response?.data)
                 const errorMessage = error.response?.data;
                 expect(errorMessage).toBe('No leads found for this user');

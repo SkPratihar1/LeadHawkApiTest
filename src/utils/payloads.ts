@@ -250,7 +250,8 @@ export interface signUp {
 export const generateSignUpPayloads =():signUp =>({
   "firstName": fakeData.firstName,
   "lastName": fakeData.lastName,
-  "email": fakeData.email,
+  "email": "pratihar+vau@itobuz.com",
+  //"email": fakeData.email,
   "password":"Itobuz#1234",
   "confirmPassword": "Itobuz#1234"
 

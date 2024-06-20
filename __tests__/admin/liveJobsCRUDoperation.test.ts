@@ -1,19 +1,13 @@
 import { login ,apiAdmin} from '../../src/apiClient';
 import {generateEditJobsPayload ,generateJobsPayload} from '../../src/utils/payloads'
 import dotenv from 'dotenv';
-import { faker } from '@faker-js/faker';
+
 
 dotenv.config();
 
 describe('API Tests', () => {
     let authToken: string | null = null;
     let jobId:any;
-    // let companyName = faker.company.name();
-    // let companyWebsite = faker.internet.url() ;
-    // let companyHQ =faker.location.city();
-    // let jobTitle=faker.person.jobTitle();
-    // let linkedinUrl=faker.internet.domainName();
-    // let industry  =faker.vehicle.model();
     
     beforeAll(async () => {
                 authToken = await login(process.env.ADMIN_EMAIL as string, process.env.ADMIN_PASSWORD as string);
@@ -34,8 +28,8 @@ describe('API Tests', () => {
             console.log("response",response.data)
          
         } catch (error) {
-            console.log(error)
-            //throw error;
+            
+            throw error;
         }
     }, 20000);
 

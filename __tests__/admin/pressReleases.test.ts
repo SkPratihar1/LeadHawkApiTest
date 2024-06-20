@@ -76,7 +76,7 @@ describe('API Tests', () => {
          try {
              
              const response = await apiAdmin.delete(`/admin/dataentry/NEWS/${newsId}`);
-             console.log("response",response)
+             //console.log("response",response.data)
              expect(response.status).toBe(200);
              expect(response).toBeDefined();
              expect(response.data).toBe('Entry deleted successfully');
@@ -84,7 +84,7 @@ describe('API Tests', () => {
              
           
          } catch (error) {
-            console.log(error)
+            
              throw error
              
          }

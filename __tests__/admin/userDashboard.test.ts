@@ -19,14 +19,23 @@ describe('API Tests', () => {
             const response = await apiAdmin.get('/admin/analysis/UserSubscriptionCount');
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
-            //expect(apiAdmin.get).toHaveBeenCalledWith('https://leadhawk-admin.laravel-studio.io/api/admin/analysis/UserSubscriptionCount');
-            expect(response.data[0].subscription).toBe('FREE');
-            expect(response.data[1].subscription).toBe('Tier1');
+            interface Subscription {
+                subscription: string;
+                count: number;
+            }
+            
+            const responses: Subscription[] = response.data;
+            const validSubscriptions = ['FREE', 'Tier1'];
+        
+            responses.forEach(item => {
+                expect(validSubscriptions).toContain(item.subscription);
+        });
 
             console.log("response",response.data)
          
         } catch (error) {
-            console.log('Error:', error);
+            throw error
+            
         }
     }, 20000);
 

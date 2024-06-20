@@ -22,18 +22,6 @@ describe('API Tests', () => {
 
      it('Create Profile', async () => {
        const createProfilePayload = generateCreateProfilePayload()
-    //    const createProfilePayload= {
-    //     "firstName":"Shaun",
-    //     "lastName":"Schmitt",
-    //     "phoneNumber":"9234567890",
-    //     "email":"pratihar+Kyra@itobuz.com"
-    // }
-    //    const createProfilePayload= {
-    //     "firstName": "Florence",
-    //     "lastName": "Vargas",
-    //     "phoneNumber": "9482473962",
-    //     "email": "puopp@mailinator.com"
-    //   }
 
         try {
             const response = await apiAdmin.post('/admin/profileCreation/createProfile',createProfilePayload);
@@ -42,8 +30,8 @@ describe('API Tests', () => {
             console.log("response 8888",response.data)
          
         } catch (error) {
-            console.log('Error:', error);
-            //throw error
+            //console.log('Error:', error);
+            throw error
         }
     }, 20000);
 
@@ -96,7 +84,7 @@ describe('API Tests', () => {
              const response = await apiAdmin.delete('admin/profileCreation/deleteDEOProfile',{data:deletePayload});
              expect(response.status).toBe(200);
              expect(response).toBeDefined();
-             console.log("response",response)
+             //console.log("response",response.data)
              expect(response.data).toBe('Acoount deleted')
              
           

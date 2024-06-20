@@ -22,7 +22,7 @@ describe('API Tests', () => {
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
             console.log("deactive",response.data)
-            expect(response.data).toBe('Deleted Succesfully')
+            expect(response.data).toBe('Deactivated Succesfully')
            
          
         } catch (error) {
