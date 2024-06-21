@@ -201,16 +201,6 @@ export interface userProfile {
   lastName: string,
   phoneNumber: string,
   email?: string,
-  // stripeId:string
-  // role: string
-  // verified: boolean,
-  // active: boolean,
-  // subscription: string,
-  // oneDayRemainTrialMailSent: boolean,
-  // trialExpiredMailSent: boolean,
-  // username: string,
-  // authorities:any[],
-  // subscriptionID:string
 }
 
 export const generateUserProfileUpdatePayloads =(id:string):userProfile =>({
@@ -218,20 +208,6 @@ export const generateUserProfileUpdatePayloads =(id:string):userProfile =>({
   "firstName": fakeData.firstName,
   "lastName": fakeData.lastName,
   "phoneNumber": "8176579225",
-  // "stripeId": "cus_Q51OqQSKta1pro",
-  // "role": "USER",
-  // "verified": true,
-  // "active": true,
-  // "subscription": "Tier1",
-  // "oneDayRemainTrialMailSent": true,
-  // "trialExpiredMailSent": true,
-  // "username": "pratihar+dev@itobuz.com",
-  // "authorities": [
-  //   {
-  //     "authority": "USER"
-  //   }
-  // ],
-  // "subscriptionID": "sub_1PGIwtCyLXRBk0KoURZ3PiPp",
   "email": "pratihar+dev@itobuz.com"
    
  
@@ -250,10 +226,69 @@ export interface signUp {
 export const generateSignUpPayloads =():signUp =>({
   "firstName": fakeData.firstName,
   "lastName": fakeData.lastName,
-  "email": "pratihar+vau@itobuz.com",
-  //"email": fakeData.email,
+  //"email": "pratihar+vau@itobuz.com",
+  "email": fakeData.email,
   "password":"Itobuz#1234",
   "confirmPassword": "Itobuz#1234"
+
+
+
+})
+
+
+export interface saveFilter {
+  "userId": string,
+  "page": string,
+  "token": string,
+  "filterName": string,
+  "isVisited": true,
+      "innerFilters": [
+        {
+          "field": string,
+          "value": string[]
+        }
+      ]
+}
+
+export const generateFilterStoredPayload =(authToken:any,filterName:string,companyHQList:string[]):saveFilter =>({
+      "userId": process.env.userId as string,
+      "page": "NewExecutiveHires",
+      "token": authToken,
+      "filterName": filterName,
+      "isVisited": true,
+      "innerFilters": [
+        {
+          "field": "companyHQ",
+          "value": companyHQList
+        }
+      ]
+
+
+
+})
+export interface saveFilter1 {
+  "filterName": string,
+      "visited": true,
+      "innerFilters": [
+        {
+          "field": "companyHQ",
+          "values": string[]
+        }
+      ]   
+
+}
+
+
+
+export const generateFilterSavePayload =(filterName:string,companyHQList:string[]):saveFilter1 =>({
+     "filterName": filterName,
+      "visited": true,
+      "innerFilters": [
+        {
+          "field": "companyHQ",
+          "values": companyHQList
+        }
+      ]   
 
 
 

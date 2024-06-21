@@ -1,5 +1,5 @@
 
-import { apiClient, login ,apiAdmin} from '../../src/apiClient';
+import { apiClient} from '../../src/apiClient';
 import { generateSignUpPayloads } from '../../src/utils/payloads';
 import dotenv from 'dotenv';
 import axios from 'axios';
@@ -21,16 +21,16 @@ describe('API Tests', () => {
             expect(response.data.success).toBe(true);
             expect(response.data.message).toBe(null);
 
-            console.log("success:",response.data.success)
-            console.log('user:', response?.data.user);
-            console.log('message:', response?.data.message);
+            // console.log("success:",response.data.success)
+            // console.log('user:', response?.data.user);
+            // console.log('message:', response?.data.message);
          
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 
                 // console.error('Error response:', error.response?.data);
-                console.error('Status:', error.response?.data.status);
-                console.error('message:', error.response?.data.message);
+                // console.error('Status:', error.response?.data.status);
+                // console.error('message:', error.response?.data.message);
                 const errorMessage = error.response?.data.message;
                 expect(errorMessage).toBe('Email already in use');
 
@@ -38,9 +38,9 @@ describe('API Tests', () => {
               
                 console.error('Error message:', (error as Error).message);
               }
-              // throw error
+              throw error
 
-            // console.log('Error:', error);
+           
         }
     }, 20000);
 

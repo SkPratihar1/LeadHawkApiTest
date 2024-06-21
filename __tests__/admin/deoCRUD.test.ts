@@ -81,7 +81,7 @@ describe('API Tests', () => {
          }
          
          try {
-             const response = await apiAdmin.delete('admin/profileCreation/deleteDEOProfile',{data:deletePayload});
+             const response = await apiAdmin.delete('/admin/profileCreation/deleteDEOProfile',{data:deletePayload});
              expect(response.status).toBe(200);
              expect(response).toBeDefined();
              //console.log("response",response.data)

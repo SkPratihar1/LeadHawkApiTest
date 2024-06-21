@@ -1,6 +1,6 @@
 
-import { log } from 'console';
 import { apiClient, login } from '../../src/apiClient';
+import { generateFilterStoredPayload ,generateFilterSavePayload} from '../../src/utils/payloads'
 import dotenv from 'dotenv';
 import { faker } from '@faker-js/faker';
 import axios from 'axios';
@@ -23,6 +23,7 @@ describe('API Tests', () => {
     let industryList: string[]
     let positionList: string[]
     let companyHQList:string[]
+    let saveFilterId:number
     let filterName =faker.location.city()
     let saveFilter:ISaveFilter
    
@@ -76,9 +77,7 @@ describe('API Tests', () => {
             expect(response).toBeDefined();
             console.log("companyHQ ",response.data)
             companyHQList=response.data
-            console.log(companyHQList)
-            // const randomIndex = Math.floor(Math.random() * industryList.length);
-            // console.log(industryList[randomIndex]);
+          
             
          
         } catch (error) {
@@ -115,7 +114,7 @@ describe('API Tests', () => {
             const response = await apiClient.post('/api/v1/userService/filter/NewExecutiveHires',searchHire);
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
-            console.log("Filter for industry ",response.data)
+           // console.log("Filter for industry ",response.data)
             
          
         } catch (error) {
@@ -132,7 +131,7 @@ describe('API Tests', () => {
             const response = await apiClient.post('/api/v1/userService/filter/NewExecutiveHires',searchHire);
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
-            console.log("Filter for companyHQ",response.data)
+            //console.log("Filter for companyHQ",response.data)
             
          
         } catch (error) {
@@ -140,23 +139,14 @@ describe('API Tests', () => {
         }
     }, 20000);
     it('Save Filter for companyHQ', async () => {
-      
-        const searchHireSave={
-                "filterName": filterName,
-                "visited": true,
-                "innerFilters": [
-                  {
-                    "field": "companyHQ",
-                    "values": companyHQList
-                  }
-                ]   
-          }
+     
+        const saveHire=generateFilterSavePayload(filterName,companyHQList)
        
         try {
-            const response = await apiClient.post('/api/v1/userService/savedSearches/HIRES',searchHireSave);
+            const response = await apiClient.post('/api/v1/userService/savedSearches/HIRES',saveHire);
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
-            console.log("save ",response.data)
+            console.log("save Filter ",response.data)
             
          
         } catch (error) {
@@ -168,6 +158,7 @@ describe('API Tests', () => {
                 // console.error('Headers:', error.response?.headers);
                 const errorMessage = error.response?.data.message;
                 expect(errorMessage).toBe('Limit reached for your subscription level');
+                console.log(errorMessage)
 
               } else {
               
@@ -178,68 +169,16 @@ describe('API Tests', () => {
         
     }, 20000);
 
-    // it('CompanyHQ Filter stored with ID', async () => {
-    //   console.log("filterName",filterName)
-    //   console.log("authToken",authToken)
 
-    //       const searchHireSave={
-    //         "userId": "663da4bd4bb0d11da73dc3e6",
-    //         "page": "NewExecutiveHires",
-    //         //"token": `Bearer ${authToken}`,
-    //         "filterName": filterName,
-    //         "isVisited": true,
-    //         "innerFilters": [
-    //           {
-    //             "field": "companyHQ",
-    //             "value":companyHQList
-    //           }
-    //         ]
-    //       }
+    it('Filter stored with ID', async () => {
        
-    //     try {
-    //         const response = await axios.post('https://leadhawk-filter.laravel-studio.io/filters1/filter',searchHireSave,
-    //         {headers: {
-    //             'Authorization': `Bearer ${authToken}`, 
-    //             'Content-Type': 'application/json'
-    //           }});
-    //         expect(response.status).toBe(200);
-    //         expect(response).toBeDefined();
-    //         console.log("save 2",response)
-            
-         
-    //     } catch (error) {
-    //         console.log(error)
-    //         //throw error;
-    //     }
-    // }, 20000);
-
-    it('RetI', async () => {
-       
-        const payload = {
-            userId: "663da4bd4bb0d11da73dc3e6",
-            page: "NewExecutiveHires",
-            filterName: filterName,
-            isVisited: true,
-            innerFilters: [
-              {
-                field: "companyHQ",
-                value: [
-                  "alaska",
-                  "anthony and serrano associates",
-                  "arizona",
-                  "arkansas",
-                  "bednarfield"
-                ]
-              }
-            ]
-          };
-          
+          const filterStoredPayload = generateFilterStoredPayload(authToken,filterName,companyHQList)
           const headers = {
             'Content-Type': 'application/json',
             'Authorization':`Bearer ${authToken}`
           }
-          
-          axios.post('https://leadhawk-filter.laravel-studio.io/filters1/filter', payload, { headers })
+          console.log("headers  gggg",headers)
+          axios.post('https://leadhawk-filter.laravel-studio.io/filters1/filter', filterStoredPayload,{headers})
             .then(response => {
               console.log('Success:', response.data);
             })
@@ -256,6 +195,7 @@ describe('API Tests', () => {
                 // Error setting up the request
                 console.log('Error message:', error.message);
               }
+              throw error
             });
     }, 20000);
 
@@ -267,50 +207,57 @@ describe('API Tests', () => {
             expect(response).toBeDefined();
             console.log("Save filter list ",response.data);
             const saveFilterList : ISaveFilter[] = response.data
-
-            //let saveFilterList =response.data.length
-
-            // expect(response.data[saveFilterList-1].filterName).toBe(filterName);
-
-            // positionList=response.data
-            // console.log(positionList)
-
-            const randomIndex = Math.floor(Math.random() * saveFilterList.length);
-            
-            saveFilter = saveFilterList[randomIndex];
-            console.log("saveFilter saveFilter",saveFilter)
-            
+           //const randomIndex = Math.floor(Math.random() * saveFilterList.length);
+           const lastCreatedIndex=(saveFilterList.length)-1
+            saveFilter = saveFilterList[lastCreatedIndex];
+            saveFilterId=saveFilter.id
+            // console.log("saveFilter saveFilter",saveFilter)
+            // console.log("saveFilterId",saveFilterId)
            
         } catch (error) {
             throw error;
         }
     }, 20000);
+    it('Delete save filter', async () => {
+     
+       try {
+           const response = await apiClient.delete(`/api/v1/userService/savedSearches/HIRES/${saveFilterId}`);
+           expect(response.status).toBe(200);
+           expect(response).toBeDefined();
+            expect(response.data).toBe('Filter Deleted Successfully');
+            console.log("delete filter",response.data);
+           
+        
+       } catch (error) {
+          throw error;
+       }
+   }, 20000);
 
     it('Delete save filter using API', async () => {
         const saveFilterDelete={
-            "filterPage":"GeneralBusinessNews",
+            "filterPage":"NewExecutiveHires",
             "token":authToken,
-            "filterName":'jk'
+            "filterName":filterName
           }
-          const header={
+          const headers={
             'Content-Type': 'application/json',
             'Authorization':`Bearer ${authToken}`
 
           }
        
         try {
-            const response = await axios.delete('https://leadhawk-filter.laravel-studio.io/filters1/deleteFilter',{data:saveFilterDelete});
+            
+            const response = await axios({
+              method: 'delete',
+              url: 'https://leadhawk-filter.laravel-studio.io/filters1/deleteFilter',
+              headers: headers,
+              data: saveFilterDelete
+            });
+      
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
-            console.log("Save filter",response.data)
-            // let saveFilterList =response.data.length
-
-            // expect(response.data[saveFilterList-1].filterName).toBe(filterName);
-            // positionList=response.data
-            // console.log(positionList)
-            // const randomIndex = Math.floor(Math.random() * positionList.length);
-            // console.log(positionList[randomIndex]);
-            // position=positionList[randomIndex]
+            expect(response.data).toBe('Filter deleted successfully');
+            console.log("delete filter",response.data);
            
         } catch (error) {
             throw error
