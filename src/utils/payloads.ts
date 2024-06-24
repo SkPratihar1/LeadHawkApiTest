@@ -290,6 +290,16 @@ export const generateFilterSavePayload =(filterName:string,companyHQList:string[
         }
       ]   
 
+})
 
+export interface restPassword{
+
+        
+    "email": string
+
+}
+
+export const generateResetPasswordPayloads= ():restPassword =>({
+  "email": process.env.FreeUser_EMAIL as string
 
 })
