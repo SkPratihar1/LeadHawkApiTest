@@ -7,7 +7,8 @@ dotenv.config();
 
 describe('API Tests', () => {
     let authToken: string | null = null;
-    let jobId:any
+    let jobId:any;
+    let jobId2:any
     beforeAll(async () => {
                 authToken = await login(process.env.ADMIN_EMAIL as string, process.env.ADMIN_PASSWORD as string);
                 apiAdmin.defaults.headers.common['Authorization'] = `Bearer ${authToken}`;
@@ -23,13 +24,38 @@ describe('API Tests', () => {
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
             console.log("response",response.data);
-            jobId=response.data.data[0].id
+            let responseLength=response.data.length
+            if(responseLength!=0){
+                jobId=response.data.data[0].id;
+                jobId2=response.data.data[1].id
+
+            }else{
+
+                console.log("Jobs Draft list is not found")
+            }
          
         } catch (error) {
-            //console.log('Error:', error);
             throw error
         }
     }, 20000);
+    it('Draft Delete',async()=>{
+
+        try{
+            const response =await apiAdmin.delete(`/admin/draft/jobs/${jobId2}`);
+            expect(response.status).toBe(200);
+            expect(response).toBeDefined();
+            expect(response.data).toBe('Draft Jobs deleted successfully');
+            console.log(response.data)
+            
+
+        }catch(error){
+            throw error
+
+        }
+
+
+
+    })
 
     it('Draft Jobs to Live Jobs', async () => {
         
