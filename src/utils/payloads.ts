@@ -303,8 +303,8 @@ export interface restPassword{
 
 }
 
-export const generateResetPasswordPayloads= ():restPassword =>({
-  "email": process.env.FreeUser_EMAIL as string
+export const generateResetPasswordPayloads= (Email:string):restPassword =>({
+  "email":Email
 
 })
 
@@ -316,8 +316,20 @@ export interface setNewPassword{
  }
 
 export const generateSetNewPasswordPayloads = (token:string):setNewPassword =>({
-"password":"Password#123" ,
-"confirmPassword":"Password#123",
-"token":token
+    "password":"Password#123" ,
+    "confirmPassword":"Password#123",
+    "token":token
 
+})
+
+export interface reActive{
+    "username": string,
+    "password": string,
+    "email": string
+}
+
+export const generateReActivePayloads =():reActive =>({
+      "username": process.env.activeDeActiveUser as string,
+      "password": process.env.FreeUser_PASSWORD as string,
+      "email": process.env.activeDeActiveUser as string
 })

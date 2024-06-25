@@ -12,7 +12,7 @@ describe('API Tests', () => {
      it('Reset Password Link sent', async () => {
        
         
-        const resetEmailPayloads = generateResetPasswordPayloads()
+        const resetEmailPayloads = generateResetPasswordPayloads(process.env.setNewPasswordUser as string)
         try {
             const response = await apiClient.post('/api/users/forgot-password',resetEmailPayloads);
             expect(response.status).toBe(200);
@@ -20,7 +20,6 @@ describe('API Tests', () => {
             const message= response.data.message
             expect(message).toBe("Reset link sent.")
             
-            //{"message":"Password Changed Succesfully"}
         } catch (error) {
            
             throw error;
@@ -30,8 +29,8 @@ describe('API Tests', () => {
 
     it('Set New Password ', async () => {
         try {
-            token =await getVerificationCodeByEmail(process.env.FreeUser_EMAIL as string)
-           console.log("token",token)
+            token =await getVerificationCodeByEmail(process.env.setNewPasswordUser as string)
+            console.log("token",token)
 
        } catch (error) {
            console.log('Token Error:', error);   

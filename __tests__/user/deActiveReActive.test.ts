@@ -1,4 +1,5 @@
 import { apiClient, login } from '../../src/apiClient';
+import { generateReActivePayloads } from '../../src/utils/payloads';
 import dotenv from 'dotenv';
 import axios from 'axios';
 
@@ -6,16 +7,15 @@ dotenv.config();
 
 describe('API Tests', () => {
     let authToken: string | null = null;
-    let fundId:string;
-    let hireId:string;
     beforeAll(async () => {
-                authToken = await login(process.env.FreeUser_EMAIL as string, process.env.FreeUser_PASSWORD as string);
-                
+                authToken = await login(process.env.activeDeActiveUser as string, process.env.FreeUser_PASSWORD as string);
+                         
                 
      });
 
 
     it('DeActivate Account', async () => {
+
        if(authToken!='User not active'){
         try {
             const response = await apiClient.delete('/api/v1/profile/');
@@ -30,8 +30,7 @@ describe('API Tests', () => {
                 
                 
                 console.log(error.response?.data)
-                const errorMessage = error.response?.data;
-                //expect(errorMessage).toBe('No leads found for this user');
+                
 
               } else {
               
@@ -47,11 +46,7 @@ describe('API Tests', () => {
 
     
     it('ReActive account', async () => {
-        const reActivePayload = {
-            "username": process.env.FreeUser_EMAIL,
-            "password": process.env.FreeUser_PASSWORD,
-            "email": process.env.FreeUser_EMAIL
-          }
+        const reActivePayload = generateReActivePayloads()
     
       
             try {
