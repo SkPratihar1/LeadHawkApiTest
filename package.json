@@ -5,15 +5,17 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "report":"open /Users/it062305/dev/project/LeadHawkApi/.html-report/report.html"
+    "report": "open /Users/it062305/dev/project/LeadHawkApi/.html-report/report.html"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/mongodb": "^4.0.7",
     "axios": "^1.7.2",
     "dotenv": "^16.4.5",
-    "jest": "^29.7.0"
+    "jest": "^29.7.0",
+    "mongodb": "^6.7.0"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",

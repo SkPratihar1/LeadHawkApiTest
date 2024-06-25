@@ -223,18 +223,22 @@ export interface signUp {
   "confirmPassword": string
 }
 
-export const generateSignUpPayloads =():signUp =>({
+export const generateSignUpPayloads =(Email:string):signUp =>({
   "firstName": fakeData.firstName,
   "lastName": fakeData.lastName,
   //"email": "pratihar+vau@itobuz.com",
-  "email": fakeData.email,
+  "email": Email,
   "password":"Itobuz#1234",
   "confirmPassword": "Itobuz#1234"
 
-
-
 })
+export interface verifyAccount{
+  token:string
+}
 
+export const generateAccountActivePayloads=(token:string):verifyAccount =>({
+  token:token
+})
 
 export interface saveFilter {
   "userId": string,
@@ -301,5 +305,19 @@ export interface restPassword{
 
 export const generateResetPasswordPayloads= ():restPassword =>({
   "email": process.env.FreeUser_EMAIL as string
+
+})
+
+export interface setNewPassword{
+
+    "password": string,
+    "confirmPassword": string,
+    "token": string
+ }
+
+export const generateSetNewPasswordPayloads = (token:string):setNewPassword =>({
+"password":"Password#123" ,
+"confirmPassword":"Password#123",
+"token":token
 
 })
