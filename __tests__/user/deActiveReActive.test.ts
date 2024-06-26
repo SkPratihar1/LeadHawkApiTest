@@ -1,5 +1,6 @@
 import { apiClient, login } from '../../src/apiClient';
 import { generateReActivePayloads } from '../../src/utils/payloads';
+import { assertReActivationDeactivationResponse } from '../../src/utils/assertions'
 import dotenv from 'dotenv';
 import axios from 'axios';
 
@@ -19,18 +20,12 @@ describe('API Tests', () => {
        if(authToken!='User not active'){
         try {
             const response = await apiClient.delete('/api/v1/profile/');
-            expect(response.status).toBe(200);
-            expect(response).toBeDefined();
-            console.log("deactive",response.data)
-            expect(response.data).toBe('Deactivated Succesfully')
-           
+            assertReActivationDeactivationResponse(response,'Deactivated Succesfully')
          
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 
-                
                 console.log(error.response?.data)
-                
 
               } else {
               
@@ -51,10 +46,8 @@ describe('API Tests', () => {
       
             try {
                 const response = await apiClient.post('/api/users/reactivate-user', reActivePayload);
-                expect(response.status).toBe(200);
-                expect(response).toBeDefined();
-                console.log("Response:", response.data);
-                expect(response.data).toBe('User reactivated successfully');
+                assertReActivationDeactivationResponse(response,'User reactivated successfully')
+
             } catch (error) {
                 
                 throw error

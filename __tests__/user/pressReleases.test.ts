@@ -1,5 +1,6 @@
 
 import { apiClient, login } from '../../src/apiClient';
+import { assertPressReleasesProperty,assertMyLeadsProperty } from '../../src/utils/assertions'
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -20,16 +21,16 @@ describe('API Tests', () => {
             const response = await apiClient.get('/api/v1/landing/news?page=0&count=25');
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
-            console.log("press reales list",response.data)
+            assertPressReleasesProperty(response);
             const list= response.data.data
             const randomIndex = Math.floor(Math.random() * list.length);
             newsId = list[randomIndex].id;
-            console.log("response funding Data",newsId)
         
     }, 20000);
 
 
     it('News add for my leads add using API', async () => {
+       let pageName='NEWS'
         const newsPayload=
             [
                 newsId
@@ -39,10 +40,9 @@ describe('API Tests', () => {
             const response = await apiClient.post('/api/v1/userService/myLeads/NEWS',newsPayload);
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
-            // const list= response.data.content
-            // const randomIndex = Math.floor(Math.random() * list.length);
-            // hireId = list[randomIndex].id;
-            console.log("response Hire Data",response.data)
+            console.log(response)
+            assertMyLeadsProperty(response, pageName);
+            //console.log("response news Data",response.data && response.data.length ? response.data[0] : null)
          
         } catch (error) {
             throw error;

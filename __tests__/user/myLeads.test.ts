@@ -1,4 +1,5 @@
 import { apiClient, login } from '../../src/apiClient';
+import { assertDeleteMyLeads } from '../../src/utils/assertions'
 import dotenv from 'dotenv';
 import axios from 'axios';
 
@@ -74,21 +75,14 @@ describe('API Tests', () => {
     
     it('Delete Hire', async () => {
         const deletePayload = [hireId]
-            
-        
-    
-        console.log("Delete Payload:", deletePayload);
     
         if (hireId) {
             try {
                 const response = await apiClient.delete('/api/v1/userService/myLeads/hires', {
                     data: deletePayload
                 });
-                expect(response.status).toBe(200);
-                expect(response).toBeDefined();
-                console.log("Response:", response.data);
-                expect(response.data).toBe('Deleted 1 MyLeads');
-            } catch (error) {
+                assertDeleteMyLeads(response)
+            } catch (error) {;
                 
                 console.log(error)
             }

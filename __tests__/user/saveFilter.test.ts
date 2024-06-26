@@ -146,7 +146,7 @@ describe('API Tests', () => {
             const response = await apiClient.post('/api/v1/userService/savedSearches/HIRES',saveHire);
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
-            console.log("save Filter ",response.data)
+            //console.log("save Filter ",response.data)
             
          
         } catch (error) {

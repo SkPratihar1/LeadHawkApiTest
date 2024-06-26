@@ -1,6 +1,7 @@
 import { apiClient, login } from '../../src/apiClient';
 import { generateResetPasswordPayloads , generateSetNewPasswordPayloads } from '../../src/utils/payloads';
-import  getVerificationCodeByEmail  from '../../src/utils/dbConection'
+import  getVerificationCodeByEmail  from '../../src/utils/dbConection';
+import { assertResetSetNewPassword } from '../../src/utils/assertions'
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -15,10 +16,11 @@ describe('API Tests', () => {
         const resetEmailPayloads = generateResetPasswordPayloads(process.env.setNewPasswordUser as string)
         try {
             const response = await apiClient.post('/api/users/forgot-password',resetEmailPayloads);
-            expect(response.status).toBe(200);
-            expect(response).toBeDefined();
-            const message= response.data.message
-            expect(message).toBe("Reset link sent.")
+            assertResetSetNewPassword(response,"Reset link sent.");
+            // expect(response.status).toBe(200);
+            // expect(response).toBeDefined();
+            // const message= response.data.message
+            // expect(message).toBe("Reset link sent.")
             
         } catch (error) {
            
@@ -39,13 +41,8 @@ describe('API Tests', () => {
         const setPasswordPayloads = generateSetNewPasswordPayloads(token)
         try {
             const response = await apiClient.post('/api/users/reset-password',setPasswordPayloads);
-            expect(response.status).toBe(200);
-            expect(response).toBeDefined();
-            const message= response.data.message
-            console.log("message:",message)
-            expect(message).toBe("Password Changed Succesfully")
+            assertResetSetNewPassword(response,"Password Changed Succesfully");
             
-         
         } catch (error) {
            
             throw error;

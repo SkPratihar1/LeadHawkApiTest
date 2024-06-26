@@ -1,4 +1,5 @@
 import { apiClient, login } from '../../src/apiClient';
+import { assertInvoiceProperty } from '../../src/utils/assertions'
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -11,8 +12,6 @@ describe('API Tests', () => {
                
      });
 
-
-
     it('Get Invoice using API', async () => {
        
         try {
@@ -22,20 +21,8 @@ describe('API Tests', () => {
             const responseLength=response.data.length
             
             if(responseLength!=0){
-                expect(response.data[0].status).toBe('paid');
-                expect(response.data[0].amountDue).toBe(1);
-                expect(response.data[0].amountPaid).toBe(1);
-
-                expect(response.data[0]).toHaveProperty('id');
-                expect(response.data[0]).toHaveProperty('pdf');
-                expect(response.data[0]).toHaveProperty('viewInvoice');
-                expect(response.data[0]).toHaveProperty('periodStart');
-                expect(response.data[0]).toHaveProperty('periodEnd');
-                expect(response.data[0]).toHaveProperty('paymentDate');
-                expect(response.data[0]).toHaveProperty('invoiceNumber');
-                expect(response.data[0]).toHaveProperty('paymentDate');
-                
-                console.log("response invoice Data",response.data)
+                assertInvoiceProperty(response)
+                //console.log("response invoice Data",response.data)
 
             }else{
                 console.log("data not found")
