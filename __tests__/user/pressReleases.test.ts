@@ -40,7 +40,6 @@ describe('API Tests', () => {
             const response = await apiClient.post('/api/v1/userService/myLeads/NEWS',newsPayload);
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
-            console.log(response)
             assertMyLeadsProperty(response, pageName);
             //console.log("response news Data",response.data && response.data.length ? response.data[0] : null)
          

@@ -17,10 +17,7 @@ describe('API Tests', () => {
         try {
             const response = await apiClient.post('/api/users/forgot-password',resetEmailPayloads);
             assertResetSetNewPassword(response,"Reset link sent.");
-            // expect(response.status).toBe(200);
-            // expect(response).toBeDefined();
-            // const message= response.data.message
-            // expect(message).toBe("Reset link sent.")
+          
             
         } catch (error) {
            

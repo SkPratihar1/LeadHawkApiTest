@@ -1,4 +1,5 @@
 import {  login ,apiAdmin} from '../../src/apiClient';
+import { assertDraftDelete} from '../../src/utils/assertions'
 import dotenv from 'dotenv';
 
 
@@ -7,6 +8,7 @@ dotenv.config();
 describe('API Tests', () => {
     let authToken: string | null = null;
     let hireId:any
+    let hireId2:any
     let dataLength:any
     beforeAll(async () => {
                 authToken = await login(process.env.ADMIN_EMAIL as string, process.env.ADMIN_PASSWORD as string);
@@ -31,6 +33,7 @@ describe('API Tests', () => {
             console.log('dataLength',dataLength)
             if(dataLength!=0){
                  hireId=response.data.data[0].id
+                 hireId2=response.data.data[1].id
 
             }else{
                 console.log("Draft list is not found")
@@ -42,6 +45,22 @@ describe('API Tests', () => {
             throw error
         }
     }, 20000);
+
+    it.skip('Draft Delete',async()=>{
+
+        try{
+            const response =await apiAdmin.delete(`/admin/draft/hires/${hireId2}`);
+            assertDraftDelete(response)
+            
+
+        }catch(error){
+            throw error
+
+        }
+
+    })
+
+
 
     it('Draft Hires to Live Hires', async () => {
         if(dataLength!=0){

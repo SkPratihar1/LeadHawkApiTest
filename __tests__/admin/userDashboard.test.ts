@@ -1,4 +1,5 @@
 import { login ,apiAdmin} from '../../src/apiClient';
+import { assertDashboardAnalysis} from '../../src/utils/assertions'
 import dotenv from 'dotenv';
 
 
@@ -44,14 +45,7 @@ describe('API Tests', () => {
     
         try {
             const response = await apiAdmin.get('/admin/analysis/NewHiresCount');
-            expect(response.status).toBe(200);
-            expect(response).toBeDefined();
-            expect(response.data[0]).toHaveProperty('name');
-            expect(response.data[0]).toHaveProperty('sub');
-            expect(response.data[0]).toHaveProperty('count');
-           
-
-            console.log("response",response.data)
+            assertDashboardAnalysis(response);
          
         } catch (error) {
             throw error;
@@ -62,13 +56,7 @@ describe('API Tests', () => {
     
         try {
             const response = await apiAdmin.get('/admin/analysis/BussinessCount');
-            expect(response.status).toBe(200);
-            expect(response).toBeDefined();
-            expect(response.data[0]).toHaveProperty('name');
-            expect(response.data[0]).toHaveProperty('sub');
-            expect(response.data[0]).toHaveProperty('count');
-
-            console.log("response",response.data)
+            assertDashboardAnalysis(response);
          
         } catch (error) {
             throw error;
@@ -80,13 +68,7 @@ describe('API Tests', () => {
     
         try {
             const response = await apiAdmin.get('/admin/analysis/FundingCount');
-            expect(response.status).toBe(200);
-            expect(response).toBeDefined();
-            expect(response.data[0]).toHaveProperty('name');
-            expect(response.data[0]).toHaveProperty('sub');
-            expect(response.data[0]).toHaveProperty('count');
-
-            console.log("response",response.data)
+            assertDashboardAnalysis(response);
          
         } catch (error) {
             throw error;
@@ -97,13 +79,8 @@ describe('API Tests', () => {
     
         try {
             const response = await apiAdmin.get('/admin/analysis/JobPostCount');
-            expect(response.status).toBe(200);
-            expect(response).toBeDefined();
-            expect(response.data[0]).toHaveProperty('name');
-            expect(response.data[0]).toHaveProperty('sub');
-            expect(response.data[0]).toHaveProperty('count');
-
-            console.log("response  jobPosting ",response.data[0])
+            assertDashboardAnalysis(response)
+           
          
         } catch (error) {
             throw error;

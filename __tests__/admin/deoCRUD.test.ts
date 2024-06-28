@@ -1,6 +1,7 @@
 
 import { login ,apiAdmin} from '../../src/apiClient';
 import { generateCreateProfilePayload , generateEditProfilePayload } from '../../src/utils/payloads'
+import { assertDeoProfileCreateEditDelete,assertDeoProfileProperty} from '../../src/utils/assertions'
 import { fakeData } from '../../src/utils/payloads';
 import dotenv from 'dotenv';
 import { faker } from '@faker-js/faker';
@@ -25,9 +26,7 @@ describe('API Tests', () => {
 
         try {
             const response = await apiAdmin.post('/admin/profileCreation/createProfile',createProfilePayload);
-            expect(response.status).toBe(200);
-            expect(response).toBeDefined();
-            console.log("response 8888",response.data)
+            assertDeoProfileCreateEditDelete(response,'Acccount created');
          
         } catch (error) {
             
@@ -43,19 +42,11 @@ describe('API Tests', () => {
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
             lastCreatedDeoLength = response.data.length-1
-
-            console.log("response",response.data)
             profileId =response.data[lastCreatedDeoLength].id
-            console.log("profileId for me",profileId)
-            expect(response.data[lastCreatedDeoLength].firstName).toBe(fakeData.firstName);
-            expect(response.data[lastCreatedDeoLength].lastName).toBe(fakeData.lastName);
-            expect(response.data[lastCreatedDeoLength].phoneNumber).toBe("9482473962");
-            expect(response.data[lastCreatedDeoLength].email).toBe(fakeData.email);
-            expect(response.data[lastCreatedDeoLength].role).toBe('DATA_ENTRY_OPERATOR');
-            expect(response.data[lastCreatedDeoLength].subscription).toBe('Tier2');
-         
+            assertDeoProfileProperty(response)
+           
         } catch (error) {
-            //console.log('Error:', error);
+            
             throw error;
         }
     }, 20000);
@@ -64,16 +55,15 @@ describe('API Tests', () => {
         const updateProfilePayloads= generateEditProfilePayload(profileId)
         try {
             const response = await apiAdmin.put('/admin/profileCreation/updateProfile',updateProfilePayloads);
-            expect(response.status).toBe(200);
-            expect(response).toBeDefined();
-            console.log("response",response.data)
-            expect(response.data).toBe('Acccount Updated')
+           
+            assertDeoProfileCreateEditDelete(response,'Acccount Updated')
 
          
         } catch (error) {
             throw error;
         }
     }, 20000);
+
     it('Delete DEO Profile ', async () => {
         const  deletePayload={
          
@@ -82,10 +72,8 @@ describe('API Tests', () => {
          
          try {
              const response = await apiAdmin.delete('/admin/profileCreation/deleteDEOProfile',{data:deletePayload});
-             expect(response.status).toBe(200);
-             expect(response).toBeDefined();
-             //console.log("response",response.data)
-             expect(response.data).toBe('Acoount deleted')
+           
+             assertDeoProfileCreateEditDelete(response,"Acoount deleted")
              
           
          } catch (error) {

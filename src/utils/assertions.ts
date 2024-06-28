@@ -238,3 +238,62 @@ export function assertAccountActive(response: AxiosResponse){
   
 
 }
+
+export function assertDeoProfileCreateEditDelete(response: AxiosResponse,message:string){
+  expect(response.status).toBe(200);
+  expect(response).toBeDefined();
+  expect(response.data).toBeDefined(); 
+  expect(response.data).toBe(message)
+  
+
+}
+export function assertDeoProfileProperty(response: AxiosResponse){
+  // expect(response.status).toBe(200);
+  // expect(response).toBeDefined();
+  // expect(response.data).toBeDefined(); 
+  // expect(response.data.message).toBe('Acccount created')
+  let lastCreatedDeoLength = response.data.length-1
+
+  expect(response.data[lastCreatedDeoLength].firstName).toBe(fakeData.firstName);
+  expect(response.data[lastCreatedDeoLength].lastName).toBe(fakeData.lastName);
+  expect(response.data[lastCreatedDeoLength].phoneNumber).toBe("9482473962");
+  expect(response.data[lastCreatedDeoLength].email).toBe(fakeData.email);
+  expect(response.data[lastCreatedDeoLength].role).toBe('DATA_ENTRY_OPERATOR');
+  expect(response.data[lastCreatedDeoLength].subscription).toBe('Tier2');
+
+  expect(response.data[lastCreatedDeoLength]).toHaveProperty('id');
+  expect(response.data[lastCreatedDeoLength]).toHaveProperty('firstName');
+  expect(response.data[lastCreatedDeoLength]).toHaveProperty('lastName');
+  expect(response.data[lastCreatedDeoLength]).toHaveProperty('phoneNumber');
+  expect(response.data[lastCreatedDeoLength]).toHaveProperty('stripeId');
+  expect(response.data[lastCreatedDeoLength]).toHaveProperty('email');
+  expect(response.data[lastCreatedDeoLength]).toHaveProperty('role');
+  expect(response.data[lastCreatedDeoLength]).toHaveProperty('verified');
+  expect(response.data[lastCreatedDeoLength]).toHaveProperty('active');
+  expect(response.data[lastCreatedDeoLength]).toHaveProperty('subscription');
+  expect(response.data[lastCreatedDeoLength]).toHaveProperty('enabled');
+  expect(response.data[lastCreatedDeoLength]).toHaveProperty('accountNonExpired');
+  expect(response.data[lastCreatedDeoLength]).toHaveProperty('credentialsNonExpired');
+  expect(response.data[lastCreatedDeoLength]).toHaveProperty('accountNonLocked');
+
+  
+
+}
+
+
+
+export function assertDashboardAnalysis(response: AxiosResponse){
+  expect(response.status).toBe(200);
+  expect(response).toBeDefined();
+  expect(response.data).toBeDefined();
+  expect(response.data[0]).toHaveProperty('name');
+  expect(response.data[0]).toHaveProperty('sub');
+  expect(response.data[0]).toHaveProperty('count');
+
+}
+
+export function assertDraftDelete(response: AxiosResponse,message:string){
+  expect(response.status).toBe(200);
+  expect(response).toBeDefined();
+  expect(response.data).toBe(message);
+}

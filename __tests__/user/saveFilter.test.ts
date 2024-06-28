@@ -60,9 +60,9 @@ describe('API Tests', () => {
             expect(response).toBeDefined();
             console.log("industry ",response.data)
             industryList=response.data
-            console.log(industryList)
-            const randomIndex = Math.floor(Math.random() * industryList.length);
-            console.log(industryList[randomIndex]);
+            //console.log(industryList)
+            //const randomIndex = Math.floor(Math.random() * industryList.length);
+            //console.log(industryList[randomIndex]);
             
          
         } catch (error) {
@@ -95,9 +95,7 @@ describe('API Tests', () => {
         try {
             const response = await apiClient.post('/api/v1/userService/filter/NewExecutiveHires',searchHire);
             expect(response.status).toBe(200);
-            expect(response).toBeDefined();
-            console.log("Filter for position",response.data)
-            
+            expect(response).toBeDefined();            
          
         } catch (error) {
             throw error;
@@ -105,7 +103,7 @@ describe('API Tests', () => {
     }, 20000);
 
 
-    it('Filter for industry', async () => {
+    it('Filter NewExecutiveHires using industry', async () => {
         const searchHire={
             "industry":industryList
           }
@@ -114,6 +112,9 @@ describe('API Tests', () => {
             const response = await apiClient.post('/api/v1/userService/filter/NewExecutiveHires',searchHire);
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
+            expect(response.data).toBeDefined();
+            expect(Array.isArray(response.data)).toBe(true);
+            console.log("response news Data",response.data && response.data.length ? response.data[0] : null)
            // console.log("Filter for industry ",response.data)
             
          
@@ -131,7 +132,7 @@ describe('API Tests', () => {
             const response = await apiClient.post('/api/v1/userService/filter/NewExecutiveHires',searchHire);
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
-            //console.log("Filter for companyHQ",response.data)
+            console.log("Filter for companyHQ",response.data)
             
          
         } catch (error) {
@@ -180,7 +181,7 @@ describe('API Tests', () => {
           console.log("headers  gggg",headers)
           axios.post('https://leadhawk-filter.laravel-studio.io/filters1/filter', filterStoredPayload,{headers})
             .then(response => {
-              console.log('Success:', response.data);
+              //console.log('Success:', response.data);
             })
             .catch(error => {
               if (error.response) {
@@ -205,14 +206,11 @@ describe('API Tests', () => {
             const response = await apiClient.get('/api/v1/userService/savedSearches/getSavedSearches');
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
-            console.log("Save filter list ",response.data);
             const saveFilterList : ISaveFilter[] = response.data
-           //const randomIndex = Math.floor(Math.random() * saveFilterList.length);
            const lastCreatedIndex=(saveFilterList.length)-1
             saveFilter = saveFilterList[lastCreatedIndex];
             saveFilterId=saveFilter.id
-            // console.log("saveFilter saveFilter",saveFilter)
-            // console.log("saveFilterId",saveFilterId)
+            
            
         } catch (error) {
             throw error;

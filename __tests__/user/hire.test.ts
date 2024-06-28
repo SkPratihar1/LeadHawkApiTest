@@ -42,7 +42,6 @@ describe('API Tests', () => {
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
             assertMyLeadsProperty(response, pageName);
-            console.log("response Hire Data",response.data)
          
         } catch (error) {
             throw error;

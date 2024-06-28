@@ -1,4 +1,5 @@
 import {  login ,apiAdmin} from '../../src/apiClient';
+import { assertDraftDelete} from '../../src/utils/assertions'
 import dotenv from 'dotenv';
 import axios from 'axios';
 
@@ -42,11 +43,9 @@ describe('API Tests', () => {
 
         try{
             const response =await apiAdmin.delete(`/admin/draft/jobs/${jobId2}`);
-            expect(response.status).toBe(200);
-            expect(response).toBeDefined();
-            expect(response.data).toBe('Draft Jobs deleted successfully');
-            console.log(response.data)
+            assertDraftDelete(response,'Draft Jobs deleted successfully')
             
+           
 
         }catch(error){
             throw error

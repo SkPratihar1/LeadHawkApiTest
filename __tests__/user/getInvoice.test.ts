@@ -21,8 +21,7 @@ describe('API Tests', () => {
             const responseLength=response.data.length
             
             if(responseLength!=0){
-                assertInvoiceProperty(response)
-                //console.log("response invoice Data",response.data)
+                assertInvoiceProperty(response);
 
             }else{
                 console.log("data not found")
