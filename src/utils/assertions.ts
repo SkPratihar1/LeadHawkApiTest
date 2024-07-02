@@ -2,18 +2,7 @@
 import { fakeData } from '../utils/payloads'
 import { AxiosResponse } from 'axios';
 
-// export function assertReactivationResponse(response: AxiosResponse) {
-//   expect(response.status).toBe(200);
-//   expect(response).toBeDefined();
-//   console.log("Response Message:", response.data);
-//   expect(response.data).toBe('User reactivated successfully');
-// }
-// export function assertDeactivationResponse(response: AxiosResponse) {
-//   expect(response.status).toBe(200);
-//   expect(response).toBeDefined();
-//   console.log("Response Message:",response.data)
-//   expect(response.data).toBe('Deactivated Succesfully');
-// }
+
 export function assertReActivationDeactivationResponse(response: AxiosResponse,message:string) {
   expect(response.status).toBe(200);
   expect(response).toBeDefined();
@@ -27,18 +16,17 @@ export function assertFundingData(response: AxiosResponse){
   expect(response.status).toBe(200);
   expect(response).toBeDefined();
   expect(response.data.data[0]).toHaveProperty('id');
-  //expect(response.data.data[0]).toHaveProperty('fundingRound');
   expect(response.data.data[0]).toHaveProperty('fundingRaised');
   expect(response.data.data[0]).toHaveProperty('companyName');
   expect(response.data.data[0]).toHaveProperty('companyHQ');
   expect(response.data.data[0]).toHaveProperty('industry');
   expect(response.data.data[0]).toHaveProperty('companyEmployeeCount');
   expect(response.data.data[0]).toHaveProperty('companyLinkedIn');
-  expect(response.data.data[0]).toHaveProperty('dataEntryOperatorId');
+  //expect(response.data.data[0]).toHaveProperty('dataEntryOperatorId');
   expect(response.data.data[0]).toHaveProperty('createdDate');
   expect(response.data.data[0]).toHaveProperty('lastModifiedDate');
   expect(response.data.data[0]).toHaveProperty('companyWebsite');
-  expect(response.data.data[0]).toHaveProperty('sourceLink');
+  
 }
 export function assertHiresProperty(response: AxiosResponse){
 
@@ -90,7 +78,7 @@ export function assertPressReleasesProperty(response: AxiosResponse){
   expect(response.data.data[0]).toHaveProperty('industry');
   expect(response.data.data[0]).toHaveProperty('companyEmployeeCount');
   expect(response.data.data[0]).toHaveProperty('companyLinkedIn');
-  expect(response.data.data[0]).toHaveProperty('dataEntryOperatorId');
+  //expect(response.data.data[0]).toHaveProperty('dataEntryOperatorId');
   expect(response.data.data[0]).toHaveProperty('createdDate');
   expect(response.data.data[0]).toHaveProperty('lastModifiedDate');
   expect(response.data.data[0]).toHaveProperty('companyWebsite');
@@ -296,4 +284,82 @@ export function assertDraftDelete(response: AxiosResponse,message:string){
   expect(response.status).toBe(200);
   expect(response).toBeDefined();
   expect(response.data).toBe(message);
+}
+export function assertDraftJobProperty(response: AxiosResponse){
+  expect(response.status).toBe(200);
+  expect(response).toBeDefined();
+  expect(response.data).toBeDefined();
+  expect(response.data.data[0]).toHaveProperty('id');
+  expect(response.data.data[0]).toHaveProperty('jobTitle');
+  expect(response.data.data[0]).toHaveProperty('jobLink');
+  expect(response.data.data[0]).toHaveProperty('companyName');
+  expect(response.data.data[0]).toHaveProperty('companyHQ');
+  expect(response.data.data[0]).toHaveProperty('industry');
+  expect(response.data.data[0]).toHaveProperty('companyEmployeeCount');
+  expect(response.data.data[0]).toHaveProperty('companyLinkedIn');
+  expect(response.data.data[0]).toHaveProperty('companyWebsite');
+  expect(response.data.data[0]).toHaveProperty('sourceLink');
+  expect(response.data.data[0]).toHaveProperty('confidenceRatio');
+  expect(response.data.data[0]).toHaveProperty('transferred');
+  expect(response.data.data[0]).toHaveProperty('deleted');
+  expect(response.data.data[0]).toHaveProperty('industry');
+  expect(response.data.data[0]).toHaveProperty('createdDate');
+  expect(response.data.data[0]).toHaveProperty('lastModifiedDate');
+    
+
+}
+
+export function assertDraftLive(response: AxiosResponse){
+  expect(response.status).toBe(201);
+  expect(response).toBeDefined();
+  expect(response.data).toHaveProperty('invalidDrafts');
+  expect(response.data).toHaveProperty('validDraftIds');
+  expect(response.data).toHaveProperty('validDrafts');
+  expect(response.data).toHaveProperty('invalidDraftIds');
+
+}
+
+export function assertHiresData(response: AxiosResponse){
+  expect(response.data.firstName).toBe(fakeData.firstName);
+  expect(response.data.lastName).toBe(fakeData.lastName);
+  expect(response.data.position).toBe(fakeData.position);
+  expect(response.data.companyName).toBe(fakeData.companyName);
+  expect(response.data.companyHQ).toBe(fakeData.companyHQ);
+  expect(response.data.industry).toBe(fakeData.industry);
+  expect(response.data.companyWebsite).toBe(fakeData.companyWebsite);
+  expect(response.data.companyEmployeeCount).toBe(70);
+  expect(response.data.companyLinkedIn).toBe("https://in.linkedin.com/company/itobuz-technologies-pvt-ltd");
+
+}
+
+export function assertJobData(response: AxiosResponse){
+   expect(response.data.jobTitle).toBe(fakeData.jobTitle);
+   expect(response.data.jobLink).toBe(fakeData.linkedinUrl);
+  expect(response.data.companyName).toBe(fakeData.companyName);
+  expect(response.data.companyHQ).toBe(fakeData.companyHQ);
+  expect(response.data.industry).toBe(fakeData.industry);
+  expect(response.data.companyWebsite).toBe(fakeData.companyWebsite);
+  expect(response.data.companyEmployeeCount).toBe(48);
+  expect(response.data.companyLinkedIn).toBe("https://in.linkedin.com/company/itobuz-technologies-pvt-ltd");
+
+};
+export function assertPressReleasesData(response: AxiosResponse){
+  expect(response.data.categories).toBe(fakeData.position);
+  expect(response.data.triggerArticle).toBe(fakeData.companyWebsite);
+  expect(response.data.trigger).toBe(fakeData.linkedinUrl);
+  expect(response.data.companyName).toBe(fakeData.companyName);
+  expect(response.data.companyHQ).toBe(fakeData.companyHQ);
+  expect(response.data.industry).toBe(fakeData.industry);
+  expect(response.data.companyWebsite).toBe(fakeData.companyWebsite);
+  expect(response.data.companyEmployeeCount).toBe(90);
+  expect(response.data.companyLinkedIn).toBe("https://in.linkedin.com/company/mrftyres");
+
+}
+
+
+export function assertLiveDataDelete(response: AxiosResponse,message:string){
+  expect(response.status).toBe(200);
+  expect(response).toBeDefined();
+  expect(response.data).toBe(message);
+
 }

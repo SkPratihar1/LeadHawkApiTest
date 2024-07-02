@@ -2,9 +2,9 @@
 import { login ,apiAdmin} from '../../src/apiClient';
 import { generateCreateProfilePayload , generateEditProfilePayload } from '../../src/utils/payloads'
 import { assertDeoProfileCreateEditDelete,assertDeoProfileProperty} from '../../src/utils/assertions'
-import { fakeData } from '../../src/utils/payloads';
 import dotenv from 'dotenv';
-import { faker } from '@faker-js/faker';
+import axios from 'axios';
+
 
 
 dotenv.config();
@@ -30,7 +30,15 @@ describe('API Tests', () => {
          
         } catch (error) {
             
-            throw error
+            if (axios.isAxiosError(error)) {
+                
+                console.log(error.response?.data)
+
+              } else {
+              
+                console.error('Error message:', (error as Error).message);
+              }
+              throw error
         }
     }, 20000);
 
@@ -77,7 +85,15 @@ describe('API Tests', () => {
              
           
          } catch (error) {
-            throw error;
+            if (axios.isAxiosError(error)) {
+                
+                console.log(error.response?.data)
+
+              } else {
+              
+                console.error('Error message:', (error as Error).message);
+              }
+              throw error
          }
      }, 20000);
  

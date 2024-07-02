@@ -1,6 +1,7 @@
 import {  login ,apiAdmin} from '../../src/apiClient';
-import { assertDraftDelete} from '../../src/utils/assertions'
+import { assertDraftDelete,assertDraftLive,assertPressReleasesProperty} from '../../src/utils/assertions'
 import dotenv from 'dotenv';
+import axios from 'axios';
 
 
 
@@ -24,7 +25,7 @@ describe('API Tests', () => {
             const response = await apiAdmin.get('/admin/draft/news?page=0&count=25');
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
-            console.log("response",response.data);
+            assertPressReleasesProperty(response);
             let responseLength=response.data.length
             if(responseLength!=0){
                 newsId=response.data.data[0].id;
@@ -46,7 +47,15 @@ describe('API Tests', () => {
             assertDraftDelete(response,'Draft News deleted successfully')
             
         }catch(error){
-            throw error
+            if (axios.isAxiosError(error)) {
+                
+                console.log(error.response?.data)
+
+              } else {
+              
+                console.error('Error message:', (error as Error).message);
+              }
+              throw error
 
         }
     })
@@ -55,9 +64,7 @@ describe('API Tests', () => {
         
         try {
             const response = await apiAdmin.post('/admin/draft/draftToLive/news?all=false',[newsId]);
-            expect(response.status).toBe(201);
-            expect(response).toBeDefined();
-            console.log("response",response.data);
+            assertDraftLive(response)
             console.log("invalidDrafts:",response.data.invalidDrafts);
             console.log("validDrafts:",response.data.validDrafts);
             let validDrafts=response.data.validDrafts
@@ -68,7 +75,15 @@ describe('API Tests', () => {
             )
          
         } catch (error) {
-            throw error
+            if (axios.isAxiosError(error)) {
+                
+                console.log(error.response?.data)
+
+              } else {
+              
+                console.error('Error message:', (error as Error).message);
+              }
+              throw error
         }
     }, 20000);
 })

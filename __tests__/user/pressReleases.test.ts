@@ -2,6 +2,7 @@
 import { apiClient, login } from '../../src/apiClient';
 import { assertPressReleasesProperty,assertMyLeadsProperty } from '../../src/utils/assertions'
 import dotenv from 'dotenv';
+import axios from 'axios';
 
 dotenv.config();
 
@@ -44,7 +45,15 @@ describe('API Tests', () => {
             //console.log("response news Data",response.data && response.data.length ? response.data[0] : null)
          
         } catch (error) {
-            throw error;
+            if (axios.isAxiosError(error)) {
+                
+                console.log(error.response?.data)
+
+              } else {
+              
+                console.error('Error message:', (error as Error).message);
+              }
+              throw error
         }
     }, 20000);
 

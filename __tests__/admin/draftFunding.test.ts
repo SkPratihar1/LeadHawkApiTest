@@ -1,7 +1,7 @@
 import {  login ,apiAdmin} from '../../src/apiClient';
-import { assertDraftDelete} from '../../src/utils/assertions'
+import { assertDraftDelete,assertDraftLive,assertFundingData} from '../../src/utils/assertions'
 import dotenv from 'dotenv';
-
+import axios from 'axios';
 
 dotenv.config();
 
@@ -21,8 +21,7 @@ describe('API Tests', () => {
         
         try {
             const response = await apiAdmin.get('/admin/draft/fundings?page=0&count=5');
-            expect(response.status).toBe(200);
-            expect(response).toBeDefined();
+            assertFundingData(response)
             console.log("response",response.data);
             let responseLength=response.data.length
             if(responseLength!=0){
@@ -47,7 +46,15 @@ describe('API Tests', () => {
             
 
         }catch(error){
-            throw error
+            if (axios.isAxiosError(error)) {
+                
+                console.log(error.response?.data)
+
+              } else {
+              
+                console.error('Error message:', (error as Error).message);
+              }
+              throw error
 
         }
 
@@ -57,9 +64,7 @@ describe('API Tests', () => {
         
         try {
             const response = await apiAdmin.post('/admin/draft/draftToLive/fundings?all=false',[fundId]);
-            expect(response.status).toBe(201);
-            expect(response).toBeDefined();
-            console.log("response",response.data);
+            assertDraftLive(response)
             console.log("invalidDrafts:",response.data.invalidDrafts);
             console.log("validDrafts:",response.data.validDrafts);
             let validDrafts=response.data.validDrafts
@@ -71,7 +76,15 @@ describe('API Tests', () => {
          
         } catch (error) {
             
-            throw error
+            if (axios.isAxiosError(error)) {
+                
+                console.log(error.response?.data)
+
+              } else {
+              
+                console.error('Error message:', (error as Error).message);
+              }
+              throw error
         }
     }, 20000);
 })

@@ -1,7 +1,8 @@
 import { apiClient, login } from '../../src/apiClient';
 import { generateResetPasswordPayloads , generateSetNewPasswordPayloads } from '../../src/utils/payloads';
 import  getVerificationCodeByEmail  from '../../src/utils/dbConection';
-import { assertResetSetNewPassword } from '../../src/utils/assertions'
+import { assertResetSetNewPassword } from '../../src/utils/assertions';
+import axios from 'axios';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -21,7 +22,15 @@ describe('API Tests', () => {
             
         } catch (error) {
            
-            throw error;
+            if (axios.isAxiosError(error)) {
+                
+                console.log(error.response?.data)
+
+              } else {
+              
+                console.error('Error message:', (error as Error).message);
+              }
+              throw error
         }
     }, 20000);
 

@@ -75,7 +75,6 @@ describe('API Tests', () => {
             const response = await apiClient.get('/api/v1/searchFilters/HIRES?fieldToSearch=companyHQ');
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
-            console.log("companyHQ ",response.data)
             companyHQList=response.data
           
             
@@ -114,9 +113,7 @@ describe('API Tests', () => {
             expect(response).toBeDefined();
             expect(response.data).toBeDefined();
             expect(Array.isArray(response.data)).toBe(true);
-            console.log("response news Data",response.data && response.data.length ? response.data[0] : null)
-           // console.log("Filter for industry ",response.data)
-            
+            console.log("response news Data",response.data && response.data.length ? response.data[0] : null);  
          
         } catch (error) {
             throw error;
@@ -132,7 +129,7 @@ describe('API Tests', () => {
             const response = await apiClient.post('/api/v1/userService/filter/NewExecutiveHires',searchHire);
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
-            console.log("Filter for companyHQ",response.data)
+            
             
          
         } catch (error) {
@@ -147,7 +144,7 @@ describe('API Tests', () => {
             const response = await apiClient.post('/api/v1/userService/savedSearches/HIRES',saveHire);
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
-            //console.log("save Filter ",response.data)
+            
             
          
         } catch (error) {
@@ -223,10 +220,18 @@ describe('API Tests', () => {
            expect(response.status).toBe(200);
            expect(response).toBeDefined();
             expect(response.data).toBe('Filter Deleted Successfully');
-            console.log("delete filter",response.data);
+            
            
         
        } catch (error) {
+        if (axios.isAxiosError(error)) {
+                
+            console.log(error.response?.data)
+
+          } else {
+          
+            console.error('Error message:', (error as Error).message);
+          }
           throw error;
        }
    }, 20000);
@@ -255,10 +260,18 @@ describe('API Tests', () => {
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
             expect(response.data).toBe('Filter deleted successfully');
-            console.log("delete filter",response.data);
+            
            
         } catch (error) {
-            throw error
+            if (axios.isAxiosError(error)) {
+                
+                console.log(error.response?.data)
+
+              } else {
+              
+                console.error('Error message:', (error as Error).message);
+              }
+              throw error
         }
     }, 20000);
 

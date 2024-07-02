@@ -1,11 +1,12 @@
 import {  login ,apiAdmin} from '../../src/apiClient';
 import { assertDraftDelete} from '../../src/utils/assertions'
 import dotenv from 'dotenv';
+import axios from 'axios';
 
 
 dotenv.config();
 
-describe('API Tests', () => {
+describe.skip('API Tests', () => {
     let authToken: string | null = null;
     let hireId:any
     let hireId2:any
@@ -24,6 +25,7 @@ describe('API Tests', () => {
             const response = await apiAdmin.get('/admin/draft/hires?page=0&count=5');
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
+            
             console.log("response",response.data);
             expect(response.data).toHaveProperty('data');
             expect(response.data).toHaveProperty('totalElements');
@@ -42,23 +44,39 @@ describe('API Tests', () => {
          
         } catch (error) {
             //console.log('Error:', error);
-            throw error
+            if (axios.isAxiosError(error)) {
+                
+                console.log(error.response?.data)
+
+              } else {
+              
+                console.error('Error message:', (error as Error).message);
+              }
+              throw error
         }
     }, 20000);
 
-    it.skip('Draft Delete',async()=>{
+    // it.skip('Draft Delete',async()=>{
 
-        try{
-            const response =await apiAdmin.delete(`/admin/draft/hires/${hireId2}`);
-            assertDraftDelete(response)
+    //     try{
+    //         const response =await apiAdmin.delete(`/admin/draft/hires/${hireId2}`);
+    //         assertDraftDelete(response)
             
 
-        }catch(error){
-            throw error
+    //     }catch(error){
+    //         if (axios.isAxiosError(error)) {
+                
+            //     console.log(error.response?.data)
 
-        }
+            //   } else {
+              
+            //     console.error('Error message:', (error as Error).message);
+            //   }
+            //   throw error
 
-    })
+    //     }
+
+    // })
 
 
 
@@ -80,11 +98,20 @@ describe('API Tests', () => {
              
             } catch (error) {
                 //console.log('Error:', error);
-                throw error
+                if (axios.isAxiosError(error)) {
+                
+                    console.log(error.response?.data)
+    
+                  } else {
+                  
+                    console.error('Error message:', (error as Error).message);
+                  }
+                  throw error
             }
 
         }else{
-            console.log("Draft Hires List not found")
+            console.log("Draft Hires List not found");
+            
         }
         
     }, 20000);

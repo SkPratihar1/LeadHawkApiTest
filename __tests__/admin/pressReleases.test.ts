@@ -1,6 +1,8 @@
 import {login ,apiAdmin} from '../../src/apiClient';
 import { generateNewsEditPayload,generateNewsPayload } from '../../src/utils/payloads';
+import { assertPressReleasesProperty,assertLiveDataDelete,assertPressReleasesData} from '../../src/utils/assertions'
 import dotenv from 'dotenv';
+import axios from 'axios';
 
 
 
@@ -26,7 +28,8 @@ describe('API Tests', () => {
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
 
-            console.log("response",response.data)
+            assertPressReleasesData(response)
+           
          
         } catch (error) {
             throw error
@@ -41,12 +44,20 @@ describe('API Tests', () => {
             const response = await apiAdmin.get('/admin/dataentry/myEntries/news?page=0&count=25');
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
-            console.log("response data",response.data.data[0])
+            assertPressReleasesProperty(response);
             newsId=response.data.data[0].id
             
          
         } catch (error) {
-            throw error
+            if (axios.isAxiosError(error)) {
+                
+                console.log(error.response?.data)
+
+              } else {
+              
+                console.error('Error message:', (error as Error).message);
+              }
+              throw error
             
         }
     }, 20000);
@@ -61,11 +72,19 @@ describe('API Tests', () => {
             console.log("response",response.data)
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
-            console.log(newsId)
+            
             
          
         } catch (error) {
-            throw error
+            if (axios.isAxiosError(error)) {
+                
+                console.log(error.response?.data)
+
+              } else {
+              
+                console.error('Error message:', (error as Error).message);
+              }
+              throw error
             
         }
     }, 20000);
@@ -76,24 +95,24 @@ describe('API Tests', () => {
          try {
              
              const response = await apiAdmin.delete(`/admin/dataentry/NEWS/${newsId}`);
-             //console.log("response",response.data)
-             expect(response.status).toBe(200);
-             expect(response).toBeDefined();
-             expect(response.data).toBe('Entry deleted successfully');
             
+             assertLiveDataDelete(response,'Entry deleted successfully');  
              
           
          } catch (error) {
             
-             throw error
+            if (axios.isAxiosError(error)) {
+                
+                console.log(error.response?.data)
+
+              } else {
+              
+                console.error('Error message:', (error as Error).message);
+              }
+              throw error
              
          }
      }, 20000);
-
-
-
-   
-
 
 
 })

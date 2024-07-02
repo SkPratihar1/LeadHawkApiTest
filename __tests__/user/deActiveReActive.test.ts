@@ -50,7 +50,15 @@ describe('API Tests', () => {
 
             } catch (error) {
                 
-                throw error
+                if (axios.isAxiosError(error)) {
+                
+                    console.log(error.response?.data)
+    
+                  } else {
+                  
+                    console.error('Error message:', (error as Error).message);
+                  }
+                  throw error
             }
     }, 20000);
  

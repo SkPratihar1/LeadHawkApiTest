@@ -1,7 +1,9 @@
 import { login ,apiAdmin} from '../../src/apiClient';
-import { generateEditHirePayload , generateAddHirePayload } from '../../src/utils/payloads'
+import { generateEditHirePayload , generateAddHirePayload } from '../../src/utils/payloads';
+import { assertHiresData} from '../../src/utils/assertions'
 import { fakeData } from '../../src/utils/payloads';
 import dotenv from 'dotenv';
+import axios from 'axios';
 
 dotenv.config();
 
@@ -28,20 +30,18 @@ describe('API Tests', () => {
             expect(response).toBeDefined();
             expect(response.data).toHaveProperty('id');
             expect(response.data).toHaveProperty('dataEntryOperatorId');
-            expect(response.data.firstName).toBe(fakeData.firstName);
-            expect(response.data.lastName).toBe(fakeData.lastName);
-            expect(response.data.position).toBe(fakeData.position);
-            expect(response.data.companyName).toBe(fakeData.companyName);
-            expect(response.data.companyHQ).toBe(fakeData.companyHQ);
-            expect(response.data.industry).toBe(fakeData.industry);
-            expect(response.data.companyWebsite).toBe(fakeData.companyWebsite);
-            expect(response.data.companyEmployeeCount).toBe(70);
-            expect(response.data.companyLinkedIn).toBe("https://in.linkedin.com/company/itobuz-technologies-pvt-ltd");
-
-            
+            assertHiresData(response);
          
         } catch (error) {
-            throw error
+            if (axios.isAxiosError(error)) {
+                
+                console.log(error.response?.data)
+
+              } else {
+              
+                console.error('Error message:', (error as Error).message);
+              }
+              throw error
             
         }
     }, 20000);
@@ -72,7 +72,7 @@ describe('API Tests', () => {
             console.log("response",response.data)
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
-            console.log(hireId)
+           
             
          
         } catch (error) {
@@ -87,7 +87,6 @@ describe('API Tests', () => {
          try {
              
              const response = await apiAdmin.delete(`/admin/dataentry/HIRES/${hireId}`);
-             console.log("response",response.data)
              expect(response.status).toBe(200);
              expect(response).toBeDefined();
              expect(response.data).toBe('Entry deleted successfully');
@@ -96,7 +95,15 @@ describe('API Tests', () => {
           
          } catch (error) {
             console.log(error)
-             throw error
+            if (axios.isAxiosError(error)) {
+                
+                console.log(error.response?.data)
+
+              } else {
+              
+                console.error('Error message:', (error as Error).message);
+              }
+              throw error
              
          }
      }, 20000);

@@ -2,6 +2,7 @@
 import { apiClient, login } from '../../src/apiClient';
 import { assertFundingData ,assertMyLeadsProperty} from '../../src/utils/assertions'
 import dotenv from 'dotenv';
+import axios from 'axios';
 
 dotenv.config();
 

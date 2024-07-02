@@ -2,6 +2,7 @@
 import { apiClient, login } from '../../src/apiClient';
 import { assertJobProperty ,assertMyLeadsProperty} from '../../src/utils/assertions'
 import dotenv from 'dotenv';
+import axios from 'axios';
 
 dotenv.config();
 
@@ -45,10 +46,19 @@ describe('API Tests', () => {
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
             assertMyLeadsProperty(response,pageName)
-            console.log("response Hire Data",response)
+            console.log("response jobs Data",response)
          
         } catch (error) {
-            throw error;
+           
+            if (axios.isAxiosError(error)) {
+                
+                console.log(error.response?.data)
+
+              } else {
+              
+                console.error('Error message:', (error as Error).message);
+              }
+              throw error
         }
     }, 20000);
 

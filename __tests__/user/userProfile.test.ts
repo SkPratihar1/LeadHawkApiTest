@@ -3,6 +3,7 @@ import { apiClient, login } from '../../src/apiClient';
 import { generateUserProfileUpdatePayloads} from '../../src/utils/payloads';
 import { assertUserProfileUpdate } from '../../src/utils/assertions'
 import dotenv from 'dotenv';
+import axios from 'axios';
 
 dotenv.config();
 
@@ -41,7 +42,15 @@ describe('API Tests', () => {
          
         } catch (error) {
             
-            throw error
+            if (axios.isAxiosError(error)) {
+                
+                console.log(error.response?.data)
+
+              } else {
+              
+                console.error('Error message:', (error as Error).message);
+              }
+              throw error
         }
     }, 20000);
 

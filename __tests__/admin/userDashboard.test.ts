@@ -1,6 +1,7 @@
 import { login ,apiAdmin} from '../../src/apiClient';
 import { assertDashboardAnalysis} from '../../src/utils/assertions'
 import dotenv from 'dotenv';
+import axios from 'axios';
 
 
 dotenv.config();
@@ -32,7 +33,7 @@ describe('API Tests', () => {
                 expect(validSubscriptions).toContain(item.subscription);
         });
 
-            console.log("response",response.data)
+            
          
         } catch (error) {
             throw error
@@ -48,7 +49,15 @@ describe('API Tests', () => {
             assertDashboardAnalysis(response);
          
         } catch (error) {
-            throw error;
+            if (axios.isAxiosError(error)) {
+                
+                console.log(error.response?.data)
+
+              } else {
+              
+                console.error('Error message:', (error as Error).message);
+              }
+              throw error;
         }
     }, 20000);
     it('Fetch Bussiness Count', async () => {
@@ -71,7 +80,15 @@ describe('API Tests', () => {
             assertDashboardAnalysis(response);
          
         } catch (error) {
-            throw error;
+            if (axios.isAxiosError(error)) {
+                
+                console.log(error.response?.data)
+
+              } else {
+              
+                console.error('Error message:', (error as Error).message);
+              }
+              throw error;
         }
     }, 20000);
     it('Fetch JobPost Count', async () => {
@@ -83,7 +100,15 @@ describe('API Tests', () => {
            
          
         } catch (error) {
-            throw error;
+            if (axios.isAxiosError(error)) {
+                
+                console.log(error.response?.data)
+
+              } else {
+              
+                console.error('Error message:', (error as Error).message);
+              }
+              throw error
         }
     }, 20000);
 
