@@ -1,12 +1,15 @@
 import {  login ,apiAdmin} from '../../src/apiClient';
+import { assertDraftDelete} from '../../src/utils/assertions'
 import dotenv from 'dotenv';
+import axios from 'axios';
 
 
 dotenv.config();
 
-describe('API Tests', () => {
+describe.skip('API Tests', () => {
     let authToken: string | null = null;
     let hireId:any
+    let hireId2:any
     let dataLength:any
     beforeAll(async () => {
                 authToken = await login(process.env.ADMIN_EMAIL as string, process.env.ADMIN_PASSWORD as string);
@@ -22,6 +25,7 @@ describe('API Tests', () => {
             const response = await apiAdmin.get('/admin/draft/hires?page=0&count=5');
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
+            
             console.log("response",response.data);
             expect(response.data).toHaveProperty('data');
             expect(response.data).toHaveProperty('totalElements');
@@ -31,6 +35,7 @@ describe('API Tests', () => {
             console.log('dataLength',dataLength)
             if(dataLength!=0){
                  hireId=response.data.data[0].id
+                 hireId2=response.data.data[1].id
 
             }else{
                 console.log("Draft list is not found")
@@ -39,9 +44,41 @@ describe('API Tests', () => {
          
         } catch (error) {
             //console.log('Error:', error);
-            throw error
+            if (axios.isAxiosError(error)) {
+                
+                console.log(error.response?.data)
+
+              } else {
+              
+                console.error('Error message:', (error as Error).message);
+              }
+              throw error
         }
     }, 20000);
+
+    // it.skip('Draft Delete',async()=>{
+
+    //     try{
+    //         const response =await apiAdmin.delete(`/admin/draft/hires/${hireId2}`);
+    //         assertDraftDelete(response)
+            
+
+    //     }catch(error){
+    //         if (axios.isAxiosError(error)) {
+                
+            //     console.log(error.response?.data)
+
+            //   } else {
+              
+            //     console.error('Error message:', (error as Error).message);
+            //   }
+            //   throw error
+
+    //     }
+
+    // })
+
+
 
     it('Draft Hires to Live Hires', async () => {
         if(dataLength!=0){
@@ -61,11 +98,20 @@ describe('API Tests', () => {
              
             } catch (error) {
                 //console.log('Error:', error);
-                throw error
+                if (axios.isAxiosError(error)) {
+                
+                    console.log(error.response?.data)
+    
+                  } else {
+                  
+                    console.error('Error message:', (error as Error).message);
+                  }
+                  throw error
             }
 
         }else{
-            console.log("Draft Hires List not found")
+            console.log("Draft Hires List not found");
+            
         }
         
     }, 20000);

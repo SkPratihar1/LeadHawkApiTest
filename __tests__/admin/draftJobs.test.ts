@@ -1,6 +1,7 @@
 import {  login ,apiAdmin} from '../../src/apiClient';
+import { assertDraftDelete,assertDraftJobProperty,assertDraftLive} from '../../src/utils/assertions'
 import dotenv from 'dotenv';
-import axios from 'axios';
+import axios from "axios";
 
 
 dotenv.config();
@@ -21,9 +22,9 @@ describe('API Tests', () => {
         
         try {
             const response = await apiAdmin.get('/admin/draft/jobs?page=0&count=25');
-            expect(response.status).toBe(200);
-            expect(response).toBeDefined();
-            console.log("response",response.data);
+            // expect(response.status).toBe(200);
+            // expect(response).toBeDefined();
+            assertDraftJobProperty(response);
             let responseLength=response.data.length
             if(responseLength!=0){
                 jobId=response.data.data[0].id;
@@ -42,11 +43,9 @@ describe('API Tests', () => {
 
         try{
             const response =await apiAdmin.delete(`/admin/draft/jobs/${jobId2}`);
-            expect(response.status).toBe(200);
-            expect(response).toBeDefined();
-            expect(response.data).toBe('Draft Jobs deleted successfully');
-            console.log(response.data)
+            assertDraftDelete(response,'Draft Jobs deleted successfully')
             
+           
 
         }catch(error){
             throw error
@@ -61,8 +60,7 @@ describe('API Tests', () => {
         
         try {
             const response = await apiAdmin.post('admin/draft/draftToLive/jobs?all=false',[jobId]);
-            expect(response.status).toBe(201);
-            expect(response).toBeDefined();
+            assertDraftLive(response)
             console.log("response",response.data);
             console.log("invalidDrafts:",response.data.invalidDrafts);
             console.log("validDrafts:",response.data.validDrafts);
@@ -74,7 +72,15 @@ describe('API Tests', () => {
             )
          
         } catch (error) {
-            throw error
+            if (axios.isAxiosError(error)) {
+                
+                console.log(error.response?.data)
+
+              } else {
+              
+                console.error('Error message:', (error as Error).message);
+              }
+              throw error
         }
     }, 20000);
 })

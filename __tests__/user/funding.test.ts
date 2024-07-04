@@ -1,6 +1,8 @@
 
 import { apiClient, login } from '../../src/apiClient';
+import { assertFundingData ,assertMyLeadsProperty} from '../../src/utils/assertions'
 import dotenv from 'dotenv';
+import axios from 'axios';
 
 dotenv.config();
 
@@ -9,7 +11,6 @@ describe('API Tests', () => {
     let fundId:string;
     beforeAll(async () => {
                 authToken = await login(process.env.USER_EMAIL as string, process.env.USER_PASSWORD as string);
-                // console.log('authToken',authToken)
      });
 
 
@@ -18,9 +19,9 @@ describe('API Tests', () => {
        
         try {
             const response = await apiClient.get('/api/v1/landing/funds?page=0&count=25');
-            expect(response.status).toBe(200);
-            expect(response).toBeDefined();
+            assertFundingData(response)
             const list= response.data.data
+            console.log("fund",response.data.data[0])
             const randomIndex = Math.floor(Math.random() * list.length);
             fundId = list[randomIndex].id;
             console.log("response funding Data",fundId)
@@ -30,6 +31,7 @@ describe('API Tests', () => {
         }
     }, 20000);
     it('Fund add for myLead  using API', async () => {
+        let pageName='FUNDING'
         const fundPayload=
             [
                 fundId
@@ -39,6 +41,7 @@ describe('API Tests', () => {
             const response = await apiClient.post('/api/v1/userService/myLeads/FUNDING',fundPayload);
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
+            assertMyLeadsProperty(response,pageName)
             console.log("response fund  Data",response.data)
          
         } catch (error) {

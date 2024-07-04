@@ -181,7 +181,7 @@ export const generateCreateProfilePayload =():CreateProfile =>({
   "firstName": fakeData.firstName,
   "lastName": fakeData.lastName,
   "phoneNumber": "9482473962",
-  "email": fakeData.email
+  "email": fakeData.email.toLowerCase()
 
 })
 
@@ -190,7 +190,7 @@ export const generateEditProfilePayload =(id:string):CreateProfile =>({
    "firstName": fakeData.firstName,
    "lastName": fakeData.lastName,
    "phoneNumber": "9232473962",
-   "email": fakeData.email
+   "email": fakeData.email.toLowerCase()
 
 
 })

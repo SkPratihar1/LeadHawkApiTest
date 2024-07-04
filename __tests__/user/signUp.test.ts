@@ -3,6 +3,7 @@ import { apiClient} from '../../src/apiClient';
 import { generateSignUpPayloads ,generateAccountActivePayloads,fakeData} from '../../src/utils/payloads';
 import dotenv from 'dotenv';
 import axios from 'axios';
+import { assertSignUp,assertAccountActive} from '../../src/utils/assertions'
 import  getVerificationCodeByEmail  from '../../src/utils/dbConection'
 
 
@@ -10,18 +11,15 @@ dotenv.config();
 
 describe('API Tests', () => {
   let token:string
-  let userEmail=fakeData.email
+  let userEmail=fakeData.email.toLowerCase()
 
      it('Create User Account', async () => {
-       console.log('userEmail',userEmail)
+      
        const signUpPayload = generateSignUpPayloads(userEmail)
         try {
             const response = await apiClient.post('/api/users/createAccount?selectedPlan=', signUpPayload);
-            expect(response.status).toBe(201);
-            expect(response).toBeDefined();
-            expect(response.data.success).toBe(true);
-            expect(response.data.message).toBe(null);
-
+            assertSignUp(response)
+           
             // console.log("success:",response.data.success)
             // console.log('user:', response?.data.user);
             // console.log('message:', response?.data.message);
@@ -46,7 +44,7 @@ describe('API Tests', () => {
     }, 20000);
 
     it('Verify new user account', async () => {
-      console.log('userEmail 2',userEmail)
+      
       try {
           token =await getVerificationCodeByEmail(userEmail)
          console.log("token",token)
@@ -58,8 +56,7 @@ describe('API Tests', () => {
       const accountVerificationPayloads = generateAccountActivePayloads(token)
       try {
           const response = await apiClient.post('/api/users/verify-user',accountVerificationPayloads);
-          expect(response.status).toBe(200);
-          expect(response).toBeDefined();  
+          assertAccountActive(response); 
        
       } catch (error) {
          

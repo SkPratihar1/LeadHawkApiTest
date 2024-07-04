@@ -1,7 +1,9 @@
 
 import {  login ,apiAdmin} from '../../src/apiClient';
 import { generateAddFundingPayload , generateEditFundingPayload } from '../../src/utils/payloads'
+import { assertFundingData,assertLiveDataDelete} from '../../src/utils/assertions'
 import dotenv from 'dotenv';
+import axios from 'axios';
 
 
 dotenv.config();
@@ -27,7 +29,15 @@ describe('API Tests', () => {
             console.log("response",response.data)
          
         } catch (error) {
-            throw error
+            if (axios.isAxiosError(error)) {
+                
+                console.log(error.response?.data)
+
+              } else {
+              
+                console.error('Error message:', (error as Error).message);
+              }
+              throw error
         }
     }, 20000);
 
@@ -39,6 +49,7 @@ describe('API Tests', () => {
             // console.log("response",response)
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
+            assertFundingData(response)
             fundId=response.data.data[0].id
             
          
@@ -62,7 +73,15 @@ describe('API Tests', () => {
             
          
         } catch (error) {
-            throw error
+            if (axios.isAxiosError(error)) {
+                
+                console.log(error.response?.data)
+
+              } else {
+              
+                console.error('Error message:', (error as Error).message);
+              }
+              throw error
             
         }
     }, 20000);
@@ -73,15 +92,20 @@ describe('API Tests', () => {
          try {
              
              const response = await apiAdmin.delete(`/admin/dataentry/FUNDING/${fundId}`);
-             expect(response.status).toBe(200);
-             expect(response).toBeDefined();
-             expect(response.data).toBe('Entry deleted successfully');
-            
+    
+                assertLiveDataDelete(response,'Entry deleted successfully');
              
           
          } catch (error) {
-            console.log(error)
-             throw error
+            if (axios.isAxiosError(error)) {
+                
+                console.log(error.response?.data)
+
+              } else {
+              
+                console.error('Error message:', (error as Error).message);
+              }
+              throw error
              
          }
      }, 20000);
