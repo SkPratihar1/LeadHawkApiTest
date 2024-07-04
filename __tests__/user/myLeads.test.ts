@@ -48,7 +48,6 @@ describe('API Tests', () => {
             const response = await apiClient.get('/api/v1/userService/myLeads/hires');
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
-            console.log("hire myLead List",response.data)
             const list= response.data
             const randomIndex = Math.floor(Math.random() * list.length);
             hireId = list[randomIndex].id;

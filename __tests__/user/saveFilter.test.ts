@@ -40,11 +40,8 @@ describe('API Tests', () => {
             const response = await apiClient.get('/api/v1/searchFilters/HIRES?fieldToSearch=position');
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
-            console.log("position ",response.data)
             positionList=response.data
-            console.log(positionList)
             const randomIndex = Math.floor(Math.random() * positionList.length);
-            console.log(positionList[randomIndex]);
             position=positionList[randomIndex]
            
         } catch (error) {
@@ -58,11 +55,8 @@ describe('API Tests', () => {
             const response = await apiClient.get('/api/v1/searchFilters/HIRES?fieldToSearch=industry');
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
-            console.log("industry ",response.data)
             industryList=response.data
-            //console.log(industryList)
-            //const randomIndex = Math.floor(Math.random() * industryList.length);
-            //console.log(industryList[randomIndex]);
+           
             
          
         } catch (error) {
@@ -175,7 +169,6 @@ describe('API Tests', () => {
             'Content-Type': 'application/json',
             'Authorization':`Bearer ${authToken}`
           }
-          console.log("headers  gggg",headers)
           axios.post('https://leadhawk-filter.laravel-studio.io/filters1/filter', filterStoredPayload,{headers})
             .then(response => {
               //console.log('Success:', response.data);

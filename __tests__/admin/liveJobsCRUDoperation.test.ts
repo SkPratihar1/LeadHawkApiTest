@@ -62,7 +62,7 @@ describe('API Tests', () => {
             console.log("response",response.data)
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
-            console.log(jobId)
+           
             
          
         } catch (error) {

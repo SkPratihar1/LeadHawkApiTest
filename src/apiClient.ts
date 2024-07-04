@@ -27,7 +27,7 @@ async function login(username: string, password: string): Promise<string | null>
         const data = response.data;
         const token=data.token
         
-        console.log('data',data)
+        // console.log('data',data)
         if (data && data.token) {
             apiClient.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
             return token;

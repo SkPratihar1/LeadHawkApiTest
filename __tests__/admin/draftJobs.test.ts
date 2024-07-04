@@ -1,7 +1,7 @@
 import {  login ,apiAdmin} from '../../src/apiClient';
 import { assertDraftDelete,assertDraftJobProperty,assertDraftLive} from '../../src/utils/assertions'
 import dotenv from 'dotenv';
-import axios from 'axios';
+import axios from "axios";
 
 
 dotenv.config();
