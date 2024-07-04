@@ -27,3 +27,4 @@ async function getVerificationCodeByEmail(email: string): Promise<string> {
 }
 
 export default getVerificationCodeByEmail;
+

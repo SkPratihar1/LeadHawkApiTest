@@ -11,7 +11,7 @@ dotenv.config();
 
 describe('API Tests', () => {
   let token:string
-  let userEmail=fakeData.email
+  let userEmail=fakeData.email.toLowerCase()
 
      it('Create User Account', async () => {
       

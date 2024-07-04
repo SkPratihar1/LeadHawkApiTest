@@ -245,7 +245,7 @@ export function assertDeoProfileProperty(response: AxiosResponse){
   expect(response.data[lastCreatedDeoLength].firstName).toBe(fakeData.firstName);
   expect(response.data[lastCreatedDeoLength].lastName).toBe(fakeData.lastName);
   expect(response.data[lastCreatedDeoLength].phoneNumber).toBe("9482473962");
-  expect(response.data[lastCreatedDeoLength].email).toBe(fakeData.email);
+  expect(response.data[lastCreatedDeoLength].email).toBe(fakeData.email.toLowerCase());
   expect(response.data[lastCreatedDeoLength].role).toBe('DATA_ENTRY_OPERATOR');
   expect(response.data[lastCreatedDeoLength].subscription).toBe('Tier2');
 

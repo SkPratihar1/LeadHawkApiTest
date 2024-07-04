@@ -1,25 +1,39 @@
 
-import { login ,apiAdmin} from '../../src/apiClient';
-import { generateCreateProfilePayload , generateEditProfilePayload } from '../../src/utils/payloads'
-import { assertDeoProfileCreateEditDelete,assertDeoProfileProperty} from '../../src/utils/assertions'
+import { login ,apiAdmin,apiClient} from '../../src/apiClient';
+import { generateCreateProfilePayload , generateEditProfilePayload ,fakeData} from '../../src/utils/payloads';
+import { assertDeoProfileCreateEditDelete,assertDeoProfileProperty} from '../../src/utils/assertions';
+import { generateResetPasswordPayloads , generateSetNewPasswordPayloads } from '../../src/utils/payloads';
+import { assertResetSetNewPassword } from '../../src/utils/assertions';
+import  getVerificationCodeByEmail  from '../../src/utils/dbConection';
 import dotenv from 'dotenv';
 import axios from 'axios';
-
+import Database from '../../src/utils/dbData'
 
 
 dotenv.config();
 
 describe('API Tests', () => {
     let authToken: string | null = null;
-    let lastCreatedDeoLength:number
-    let profileId:any
+    let lastCreatedDeoLength:number;
+    let profileId:any;
+    let dbInstance: Database;
+    let tokenId:any
+    
+    
  
     beforeAll(async () => {
                 authToken = await login(process.env.ADMIN_EMAIL as string, process.env.ADMIN_PASSWORD as string);
                 apiAdmin.defaults.headers.common['Authorization'] = `Bearer ${authToken}`;
+                dbInstance = Database.getInstance();
+                await dbInstance.connect();
+                
               
      });
 
+     afterAll(async () => {
+        await dbInstance.disconnect();
+        
+      });
 
      it('Create Profile', async () => {
        const createProfilePayload = generateCreateProfilePayload()
@@ -27,6 +41,13 @@ describe('API Tests', () => {
         try {
             const response = await apiAdmin.post('/admin/profileCreation/createProfile',createProfilePayload);
             assertDeoProfileCreateEditDelete(response,'Acccount created');
+            
+            const db = dbInstance.getDb();
+            const collection = db.collection('Users');
+            const resource = await collection.findOne({  email: fakeData.email.toLowerCase() });
+
+            expect(resource).toMatchObject(createProfilePayload);
+
          
         } catch (error) {
             
@@ -39,6 +60,30 @@ describe('API Tests', () => {
                 console.error('Error message:', (error as Error).message);
               }
               throw error
+        }
+    }, 20000);
+
+    it('Set New Password ', async () => {
+        try {
+            
+            const db = dbInstance.getDb();
+            const collection = db.collection('Token');
+            const resource = await collection.findOne({  email: fakeData.email.toLowerCase() });
+            tokenId  =resource?._id
+            
+
+       } catch (error) {
+           console.log('Token Error:', error);   
+       }
+        
+        const setPasswordPayloads = generateSetNewPasswordPayloads(tokenId)
+        try {
+            const response = await apiClient.post('/api/users/reset-password',setPasswordPayloads);
+            assertResetSetNewPassword(response,"Password Changed Succesfully");
+            
+        } catch (error) {
+           
+            throw error;
         }
     }, 20000);
 
@@ -64,8 +109,7 @@ describe('API Tests', () => {
         try {
             const response = await apiAdmin.put('/admin/profileCreation/updateProfile',updateProfilePayloads);
            
-            assertDeoProfileCreateEditDelete(response,'Acccount Updated')
-
+            assertDeoProfileCreateEditDelete(response,'Acccount Updated');
          
         } catch (error) {
             throw error;
