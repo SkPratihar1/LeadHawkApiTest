@@ -2,6 +2,7 @@ import { apiClient, login } from '../../src/apiClient';
 import { assertInvoiceProperty } from '../../src/utils/assertions'
 import dotenv from 'dotenv';
 import axios from 'axios';
+import util from 'util'
 
 dotenv.config();
 
@@ -26,16 +27,17 @@ describe('API Tests', () => {
 
             }else{
                 console.log("data not found")
-                console.log("response invoice Data",response.data)
+                // console.log("response invoice Data",response.data)
 
             }
             
-            console.log("response invoice Data",response.data)
+            // console.log("response invoice Data",response.data)
          
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 
-                console.log(error.response?.data)
+                //console.log(error.response?.data)
+                console.log(util.inspect(error.response?.data, { depth: null, colors: true }));
 
               } else {
               

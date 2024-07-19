@@ -6,7 +6,7 @@ import axios from "axios";
 
 dotenv.config();
 
-describe('API Tests', () => {
+describe('API Tests Draft Jobs', () => {
     let authToken: string | null = null;
     let jobId:any;
     let jobId2:any

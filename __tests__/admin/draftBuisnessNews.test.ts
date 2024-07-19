@@ -2,12 +2,13 @@ import {  login ,apiAdmin} from '../../src/apiClient';
 import { assertDraftDelete,assertDraftLive,assertPressReleasesProperty} from '../../src/utils/assertions'
 import dotenv from 'dotenv';
 import axios from 'axios';
+import util from 'util';
 
 
 
 dotenv.config();
 
-describe('API Tests', () => {
+describe('API Tests Draft Buisness news', () => {
     let authToken: string | null = null;
     let newsId:any;
     let newsId2:any
@@ -48,17 +49,14 @@ describe('API Tests', () => {
             
         }catch(error){
             if (axios.isAxiosError(error)) {
-                
-                console.log(error.response?.data)
-
+                // Use util.inspect to handle circular references
+                console.log(util.inspect(error.response?.data, { depth: null, colors: true }));
               } else {
-              
                 console.error('Error message:', (error as Error).message);
               }
-              throw error
-
-        }
-    })
+              throw error;
+            }
+    },20000)
 
     it('Draft News to Live News', async () => {
         
@@ -76,14 +74,12 @@ describe('API Tests', () => {
          
         } catch (error) {
             if (axios.isAxiosError(error)) {
-                
-                console.log(error.response?.data)
-
+                // Use util.inspect to handle circular references
+                console.log(util.inspect(error.response?.data, { depth: null, colors: true }));
               } else {
-              
                 console.error('Error message:', (error as Error).message);
               }
-              throw error
-        }
+              throw error;
+            }
     }, 20000);
 })

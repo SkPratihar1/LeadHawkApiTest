@@ -2,6 +2,7 @@ import {  login ,apiAdmin} from '../../src/apiClient';
 import { assertDraftDelete} from '../../src/utils/assertions'
 import dotenv from 'dotenv';
 import axios from 'axios';
+import util from 'util';
 
 
 dotenv.config();
@@ -45,15 +46,13 @@ describe.skip('API Tests', () => {
         } catch (error) {
             //console.log('Error:', error);
             if (axios.isAxiosError(error)) {
-                
-                console.log(error.response?.data)
-
+                // Use util.inspect to handle circular references
+                console.log(util.inspect(error.response?.data, { depth: null, colors: true }));
               } else {
-              
                 console.error('Error message:', (error as Error).message);
               }
-              throw error
-        }
+              throw error;
+            }
     }, 20000);
 
     // it.skip('Draft Delete',async()=>{
@@ -99,15 +98,13 @@ describe.skip('API Tests', () => {
             } catch (error) {
                 //console.log('Error:', error);
                 if (axios.isAxiosError(error)) {
-                
-                    console.log(error.response?.data)
-    
+                    // Use util.inspect to handle circular references
+                    console.log(util.inspect(error.response?.data, { depth: null, colors: true }));
                   } else {
-                  
                     console.error('Error message:', (error as Error).message);
                   }
-                  throw error
-            }
+                  throw error;
+                }
 
         }else{
             console.log("Draft Hires List not found");

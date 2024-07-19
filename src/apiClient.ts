@@ -1,5 +1,6 @@
 
 import axios, { AxiosInstance } from 'axios';
+import {handleApiError} from './utils/apiError'
 
 const apiClient: AxiosInstance = axios.create({
   baseURL: 'https://leadhawk-user.laravel-studio.io',
@@ -21,7 +22,6 @@ async function login(username: string, password: string): Promise<string | null>
         username: username,
         password: password
     };
-
     try {
         const response = await apiClient.post('/api/users/login', loginPayload);
         const data = response.data;
@@ -38,19 +38,20 @@ async function login(username: string, password: string): Promise<string | null>
         
 
     } catch (error) {
-      if (axios.isAxiosError(error)) {
+      // if (axios.isAxiosError(error)) {
                 
                 
-        console.log(error.response?.data.message)
-        const errorMessage = error.response?.data;
-        return errorMessage.message
-        //expect(errorMessage).toBe('No leads found for this user');
+      //   console.log(error.response?.data.message)
+      //   const errorMessage = error.response?.data;
+      //   return errorMessage.message
+      //   //expect(errorMessage).toBe('No leads found for this user');
 
-      } else {
+      // } else {
       
-        console.error('Error message:', (error as Error).message);
-      }
-        console.log('Login error:', error);
+      //   console.error('Error message:', (error as Error).message);
+      // }
+      //   console.log('Login error:', error);
+      handleApiError(error);
         return null;
     }
 }

@@ -4,6 +4,7 @@ import  getVerificationCodeByEmail  from '../../src/utils/dbConection';
 import { assertResetSetNewPassword } from '../../src/utils/assertions';
 import axios from 'axios';
 import dotenv from 'dotenv';
+import util from 'util'
 
 dotenv.config();
 
@@ -24,7 +25,7 @@ describe('API Tests', () => {
            
             if (axios.isAxiosError(error)) {
                 
-                console.log(error.response?.data)
+                console.log(util.inspect(error.response?.data, { depth: null, colors: true }));
 
               } else {
               

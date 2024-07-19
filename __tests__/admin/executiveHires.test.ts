@@ -5,7 +5,7 @@ import { fakeData } from '../../src/utils/payloads';
 import dotenv from 'dotenv';
 import axios from 'axios';
 import Database from '../../src/utils/dbData';
-import {omit} from '../../src/utils/omit'
+import util from 'util';
 
 dotenv.config();
 
@@ -108,18 +108,15 @@ describe('API Tests', () => {
              
           
          } catch (error) {
-            console.log(error)
+            //console.log(error)
             if (axios.isAxiosError(error)) {
-                
-                console.log(error.response?.data)
-
+                // Use util.inspect to handle circular references
+                console.log(util.inspect(error.response?.data, { depth: null, colors: true }));
               } else {
-              
                 console.error('Error message:', (error as Error).message);
               }
-              throw error
-             
-         }
+              throw error;
+            }
      }, 20000);
 
 

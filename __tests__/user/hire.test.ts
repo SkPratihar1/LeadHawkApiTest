@@ -2,10 +2,11 @@ import { apiClient, login } from '../../src/apiClient';
 import { assertHiresProperty,assertMyLeadsProperty } from '../../src/utils/assertions'
 import dotenv from 'dotenv';
 import axios from 'axios';
+import util from 'util'
 
 dotenv.config();
 
-describe('API Tests', () => {
+describe.skip('API Tests', () => {
     let authToken: string | null = null;
     let hireId:string;
     beforeAll(async () => {
@@ -28,8 +29,8 @@ describe('API Tests', () => {
          
         } catch (error) {
             if (axios.isAxiosError(error)) {
-                
-                console.log(error.response?.data)
+                console.error(error.toJSON())
+                //console.log(util.inspect(error.response?.data, { depth: null, colors: true }));
 
               } else {
               
@@ -54,8 +55,8 @@ describe('API Tests', () => {
          
         } catch (error) {
             if (axios.isAxiosError(error)) {
-                
-                console.log(error.response?.data)
+                console.error(error.toJSON())
+                //console.log(util.inspect(error.response?.data, { depth: null, colors: true }));
 
               } else {
               

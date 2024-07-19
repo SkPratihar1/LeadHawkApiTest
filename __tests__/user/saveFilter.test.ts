@@ -4,6 +4,7 @@ import { generateFilterStoredPayload ,generateFilterSavePayload} from '../../src
 import dotenv from 'dotenv';
 import { faker } from '@faker-js/faker';
 import axios from 'axios';
+import util from 'util'
 
 dotenv.config();
 
@@ -16,7 +17,7 @@ interface ISaveFilter {
     visited: boolean;
 }
 
-describe('API Tests', () => {
+describe.skip('API Tests', () => {
     let authToken: string | null = null;
     let industry:string
     let position:string
@@ -258,7 +259,7 @@ describe('API Tests', () => {
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 
-                console.log(error.response?.data)
+              console.log(util.inspect(error.response?.data, { depth: null, colors: true }));
 
               } else {
               

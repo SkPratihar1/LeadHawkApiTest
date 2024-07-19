@@ -4,6 +4,7 @@ import { generateAddFundingPayload , generateEditFundingPayload } from '../../sr
 import { assertFundingData,assertLiveDataDelete} from '../../src/utils/assertions'
 import dotenv from 'dotenv';
 import axios from 'axios';
+import util from 'util';
 
 
 dotenv.config();
@@ -30,15 +31,13 @@ describe('API Tests', () => {
          
         } catch (error) {
             if (axios.isAxiosError(error)) {
-                
-                console.log(error.response?.data)
-
+                // Use util.inspect to handle circular references
+                console.log(util.inspect(error.response?.data, { depth: null, colors: true }));
               } else {
-              
                 console.error('Error message:', (error as Error).message);
               }
-              throw error
-        }
+              throw error;
+            }
     }, 20000);
 
     it('Funding list', async () => {
@@ -74,16 +73,13 @@ describe('API Tests', () => {
          
         } catch (error) {
             if (axios.isAxiosError(error)) {
-                
-                console.log(error.response?.data)
-
+                // Use util.inspect to handle circular references
+                console.log(util.inspect(error.response?.data, { depth: null, colors: true }));
               } else {
-              
                 console.error('Error message:', (error as Error).message);
               }
-              throw error
-            
-        }
+              throw error;
+            }
     }, 20000);
 
     it('Fund delete', async () => {
@@ -98,16 +94,13 @@ describe('API Tests', () => {
           
          } catch (error) {
             if (axios.isAxiosError(error)) {
-                
-                console.log(error.response?.data)
-
+                // Use util.inspect to handle circular references
+                console.log(util.inspect(error.response?.data, { depth: null, colors: true }));
               } else {
-              
                 console.error('Error message:', (error as Error).message);
               }
-              throw error
-             
-         }
+              throw error;
+            }
      }, 20000);
 
 

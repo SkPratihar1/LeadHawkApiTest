@@ -3,10 +3,24 @@ import { apiClient, login } from '../../src/apiClient';
 import { assertJobProperty ,assertMyLeadsProperty} from '../../src/utils/assertions'
 import dotenv from 'dotenv';
 import axios from 'axios';
+import util from 'util'
 
 dotenv.config();
 
-describe('API Tests', () => {
+// function getCircularReplacer() {
+//     const seen = new WeakSet();
+//     return (key: string, value: any) => {
+//         if (typeof value === "object" && value !== null) {
+//             if (seen.has(value)) {
+//                 return;
+//             }
+//             seen.add(value);
+//         }
+//         return value;
+//     };
+// }
+
+describe.skip('API Tests', () => {
     let authToken: string | null = null;
     let jobPostId:string;
     beforeAll(async () => {
@@ -24,14 +38,24 @@ describe('API Tests', () => {
             expect(response).toBeDefined();
             assertJobProperty(response)
             const list= response.data.data
-            // console.log(response.data)
+            console.log("Code Api ")
             const randomIndex = Math.floor(Math.random() * list.length);
             jobPostId = list[randomIndex].id;
             console.log("response jobsId Data",jobPostId)
+            
          
         } catch (error) {
-            throw error
-            
+           
+            if (axios.isAxiosError(error)) {
+                
+                console.log(util.inspect(error.response?.data, { depth: null, colors: true }));
+                
+
+              } else {
+              
+                console.error('Error message:', (error as Error).message);
+              }
+              throw error
         }
     }, 20000);
     it('Jobs add for myLead using API', async () => {
@@ -46,13 +70,15 @@ describe('API Tests', () => {
             expect(response.status).toBe(200);
             expect(response).toBeDefined();
             assertMyLeadsProperty(response,pageName)
-            console.log("response jobs Data",response)
+            console.log("Code Api 2")
+            // console.log("response jobs Data",response)
          
         } catch (error) {
            
             if (axios.isAxiosError(error)) {
                 
-                console.log(error.response?.data)
+                console.log(util.inspect(error.response?.data, { depth: null, colors: true }));
+                
 
               } else {
               

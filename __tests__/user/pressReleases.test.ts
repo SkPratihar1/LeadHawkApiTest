@@ -3,6 +3,7 @@ import { apiClient, login } from '../../src/apiClient';
 import { assertPressReleasesProperty,assertMyLeadsProperty } from '../../src/utils/assertions'
 import dotenv from 'dotenv';
 import axios from 'axios';
+import util from 'util'
 
 dotenv.config();
 
@@ -47,7 +48,7 @@ describe('API Tests', () => {
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 
-                console.log(error.response?.data)
+                console.log(util.inspect(error.response?.data, { depth: null, colors: true }));
 
               } else {
               
